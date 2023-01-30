@@ -1,0 +1,828 @@
+{
+  "uuid": "1df7cff7-74ec-4381-a6af-c2c852afd3be",
+  "lastMigration": 24,
+  "name": "QuestionBox API",
+  "endpointPrefix": "api",
+  "latency": 0,
+  "port": 3002,
+  "routes": [
+    {
+      "uuid": "e6a051ac-0545-49ec-b819-845f85ec1023",
+      "documentation": "Create a user",
+      "method": "post",
+      "endpoint": "auth/users/",
+      "responses": [
+        {
+          "uuid": "b4e3f251-63c2-4e44-9df3-28dbfc19c6cf",
+          "body": "{\n    \"id\": 1,\n    \"username\": \"{{ body 'username' 'testuser' }}\"\n}",
+          "latency": 50,
+          "statusCode": 201,
+          "label": "Success",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "d5dd71d6-3a4f-4f45-927b-5f9e8d2a1fbe",
+      "documentation": "Get token for username and password",
+      "method": "post",
+      "endpoint": "auth/token/login/",
+      "responses": [
+        {
+          "uuid": "83938cc2-3ebc-46c5-b240-4cca140fca65",
+          "body": "{\n  \"non_field_errors\": [\n    \"Unable to log in with provided credentials.\"\n  ]\n}",
+          "latency": 0,
+          "statusCode": 403,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "3ebaad5b-75a0-4466-959a-72c82d6e6d1a",
+          "body": "{\n    \"auth_token\": \"testtoken\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "test",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "3dab4804-30cb-4966-b04d-8b38a184aa7a",
+      "documentation": "Get my user info",
+      "method": "get",
+      "endpoint": "auth/users/me/",
+      "responses": [
+        {
+          "uuid": "c8e89601-7420-4514-b482-a2a3af97d89d",
+          "body": "{\n  \"detail\": \"Invalid token.\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "b9a9db11-7ad8-4fa3-bccf-ad6233714d73",
+          "body": "{\n    \"id\": 1,\n    \"username\": \"testuser\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "afcd9d44-7299-45f7-80b2-809893105c5e",
+      "documentation": "Get a list of all questions",
+      "method": "get",
+      "endpoint": "questions/",
+      "responses": [
+        {
+          "uuid": "415e4b7a-acbf-4796-92f1-cf1787f00d3a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "2de0cd88-680f-4847-b6b4-fa3f44e1ba2d",
+          "body": "{\n    \"count\": 10,\n    \"results\": [\n        {{#repeat 10}}\n        {\n            \"id\": {{@index}},\n            \"author\": {\n                \"id\": {{ int 2 20 }},\n                \"username\": \"{{ lowercase (firstName) }}\"\n            },\n            \"title\": \"{{ lorem 5 }}\",\n            \"body\": \"{{ lorem 30 }}\",\n            \"tags\": {{{ someOf (array 'tag1' 'tag2' 'tag3' 'tag4' 'tag5') 0 3 true }}},\n            \"created_at\": \"{{ date '2021' '2022' 'YYYY-MM-DDTHH:mm:ss-05:00' }}\"\n        }\n        {{/repeat}}\n    ]\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "75b444bb-5f51-4f80-8930-ef988c5bce3c",
+      "documentation": "Get a list of questions I have asked",
+      "method": "get",
+      "endpoint": "questions/me/",
+      "responses": [
+        {
+          "uuid": "7f7058ec-a1ce-4466-b705-909f317a498c",
+          "body": "",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "6c6ca1d8-a7de-4d77-a2dd-af2b5d76445a",
+          "body": "\n    \"count\": 10,\n    \"results\": [\n        {{#repeat 10}}\n        {\n            \"id\": {{@index}},\n            \"title\": \"{{ lorem 5 }}\",\n            \"body\": \"{{ lorem 30 }}\",\n            \"tags\": {{{ someOf (array 'tag1' 'tag2' 'tag3' 'tag4' 'tag5') 0 3 true }}},\n            \"created_at\": \"{{ date '2021' '2022' 'YYYY-MM-DDTHH:mm:ss-05:00' }}\"\n        }\n        {{/repeat}}\n    ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "1548d8bf-4f67-447e-a91f-3c3a569604c7",
+      "documentation": "Get a list of my answers",
+      "method": "get",
+      "endpoint": "answers/me",
+      "responses": [
+        {
+          "uuid": "ddbf5133-60d1-4199-bbd0-dbbd91463071",
+          "body": "{\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "be41be98-60b9-4165-a4ae-7b3956e6b927",
+          "body": " [\n  {{#repeat 10}}\n    {\n      \"id\": {{@index}},\n      \"question_id\": {{ int 1 99}},\n      \"text\": {{ lorem 20 }},\n      \"accepted\": {{ boolean }}\n    }\n{{/repeat}}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "f21cc3c2-b3ae-459a-9776-c675223a67e4",
+      "documentation": "Create new question",
+      "method": "post",
+      "endpoint": "questions/",
+      "responses": [
+        {
+          "uuid": "35700298-20be-4c33-bf19-65711b7ce79d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "728c3fdf-f46d-4b0f-b5a6-a6d42994e3d0",
+          "body": "{\n    \"id\": {{ int 1 50 }},\n    \"title\": \"{{ body 'title' }}\",\n    \"body\": \"{{ body 'body' }}\",\n    \"tags\": \"[]\",\n    \"created_at\": \"{{ now }}\"\n}\n",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            },
+            {
+              "target": "body",
+              "modifier": "title",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "AND",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "3a3175bb-5ea6-4c9d-b8f9-1a6b6e98b8e4",
+      "documentation": "Create a new answer to a question",
+      "method": "post",
+      "endpoint": "questions/:id/answers",
+      "responses": [
+        {
+          "uuid": "2c1f2080-abdc-49dc-b8c5-e6f2d5ef2aea",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "a37097cf-c088-4ee7-9c15-c616b590267c",
+          "body": "{\n  \"id\": {{ int 1 99 }},\n  \"question_id\": {{ urlParam 'id'}},\n  \"text\": {{ lorem 20 }},\n  \"accepted\": false,\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            },
+            {
+              "target": "body",
+              "modifier": "title",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "AND",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "ce2d3ef9-8297-4b44-84f6-3efc1522dd2d",
+      "documentation": "Get one question and its answers",
+      "method": "get",
+      "endpoint": "questions/:id/",
+      "responses": [
+        {
+          "uuid": "82bcddf2-7314-43b7-9ee7-527ac31ab387",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "87098277-9e92-48d5-94cc-266aba111f1b",
+          "body": "{\n    \"id\": {{ urlParam 'id'}},\n    \"author\": {\n        \"id\": {{ int 2 20 }},\n        \"username\": \"{{ lowercase (firstName) }}\"\n    },\n   \"title\": \"{{ lorem 5 }}\",\n    \"body\": \"{{ lorem 30 }}\",\n    \"tags\": {{{ someOf (array 'tag1' 'tag2' 'tag3' 'tag4' 'tag5') 0 3 true }}},\n    \"answers\": [\n      {{#repeat 0 10 comma=true}}\n        {\n          \"id\": {{ int 1 100 }},\n          \"text\": {{ lorem 20 }},\n          \"author\": {\n            \"id\": {{ int 1 50 }},\n            \"username\": \"{{ lowercase (firstName) }}\"\n          },\n          \"accepted\": {{ boolean }}\n        }\n      {{/repeat}}\n      ],\n    \"created_at\": \"{{ date '2021' '2022' 'YYYY-MM-DDTHH:mm:ss-05:00' }}\"\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "7b89241f-72b2-4d06-92b9-0047982f799a",
+      "documentation": "Update question",
+      "method": "patch",
+      "endpoint": "questions/:id/",
+      "responses": [
+        {
+          "uuid": "712982a8-ffcb-41c2-ad20-75f460e3f005",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "d87c457c-1204-4555-9564-ac39d41f41e8",
+          "body": "{\n    \"id\": {{ urlParam 'id'}},\n    \"author\": {\n        \"id\": {{ int 2 20 }},\n        \"username\": \"{{ lowercase (firstName) }}\"\n    },\n   \"title\": \"{{ lorem 5 }}\",\n    \"body\": \"{{ lorem 30 }}\",\n    \"tags\": {{{ someOf (array 'tag1' 'tag2' 'tag3' 'tag4' 'tag5') 0 3 true }}},\n    \"created_at\": \"{{ date '2021' '2022' 'YYYY-MM-DDTHH:mm:ss-05:00' }}\"\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "2a8f4e54-74d3-4f03-8f76-87024d0aaec0",
+      "documentation": "Delete question",
+      "method": "delete",
+      "endpoint": "questions/:id/",
+      "responses": [
+        {
+          "uuid": "250aa8c0-2aeb-41d4-a96d-107512335268",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "a642f148-269f-480f-8f31-be589d62cbd1",
+          "body": "{}\n",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "c140fda5-f2f1-4319-99e8-d5b7e2ca337e",
+      "documentation": "Delete an answer",
+      "method": "delete",
+      "endpoint": "answers/:Id/",
+      "responses": [
+        {
+          "uuid": "16f6b35b-ffaf-45be-942d-ad20fb2730af",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "16e79ee7-794e-47a7-89ae-28f7c8846210",
+          "body": "{}\n",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "Token testtoken",
+              "operator": "equals",
+              "invert": false
+            }
+          ],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": false,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "4d196689-dc66-4897-85c8-47b4385f1ebf",
+      "documentation": "Mark an answer as accepted ",
+      "method": "patch",
+      "endpoint": "answers/:Id/",
+      "responses": [
+        {
+          "uuid": "3c6dff56-1b50-4158-ac16-b9827cba0688",
+          "body": "",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "disableTemplating": false,
+          "rulesOperator": "OR",
+          "fallbackTo404": false,
+          "default": true,
+          "databucketID": "",
+          "bodyType": "INLINE"
+        },
+        {
+          "uuid": "f6ca0391-8c40-4186-9c50-d5bc4b48c78b",
+          "body": "{\n  \"id\": {{ urlParam 'id'}},\n  \"question_id\": {{ int 1 99}},\n  \"text\": {{ lorem 20 }},\n  \"accepted\": \"true\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "accepted",
+              "value": "true",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "10d58f64-3c2a-4baa-b0ed-c2ab3d850358",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "If the body of the request does not contain the key ''accepted\"",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "accepted",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyRemovePrefix": false,
+  "hostname": "0.0.0.0",
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "data": []
+}
