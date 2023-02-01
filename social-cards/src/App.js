@@ -2,21 +2,42 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import token from "./token.json";
+import he from "he";
 
 console.log(token.token);
 function App() {
   return (
     <div className='App'>
-      <FrontCard token={token.token} />
+      <SearchBar />
     </div>
   );
 }
-
-function FrontCard({ token }) {
+function SearchBar() {
+  const [text, setText] = useState("");
+  const [query, setQuery] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setQuery(text);
+  };
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button>Search</button>
+      </form>
+      <FrontCard token={token.token} query={query} />
+    </>
+  );
+}
+function FrontCard({ token, query }) {
   const [img, setImg] = useState([]);
   useEffect(() => {
     axios
-      .get("https://api.unsplash.com/search/photos?query=mountains", {
+      .get(`https://api.unsplash.com/search/photos?query=${query}`, {
         headers: {
           Authorization: `${token}`,
         },
@@ -28,7 +49,7 @@ function FrontCard({ token }) {
           }))
         );
       });
-  }, [token]);
+  }, [token, query]);
   return (
     img.length > 0 && (
       <div className='homepage'>
