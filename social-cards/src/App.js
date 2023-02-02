@@ -22,50 +22,46 @@ function App() {
 //   );
 // }
 
-function NewPost (){
+function NewPost() {
   const [canvasImg, setCanvasImg] = useState(null);
-  return(
-    <div className="new-post">
-      <div className="buttons">
+  return (
+    <div className='new-post'>
+      <div className='buttons'>
         <FrontImageButton />
         <AddTextButton />
-        <NextButton/>
+        <NextButton />
       </div>
-      <ImageCanvas canvasImg={canvasImg}/>
-      <SearchBar setCanvasImg={setCanvasImg}/>
-      
-      
+      <ImageCanvas canvasImg={canvasImg} />
+      <SearchBar setCanvasImg={setCanvasImg} />
     </div>
-  )
+  );
 }
 
-function ImageCanvas({canvasImg}){
+function ImageCanvas({ canvasImg }) {
   // const canvasRef = useRef(null)
   // const canvas = canvasRef.current
   // const ctx = canvas.getContext('2d')
 
   // ctx.drawImage( <img src={canvasImg} alt="pls work"/>,0,0)
 
-  return <img src={canvasImg} alt=""/>
+  return (
+    <div className='canvas'>
+      <img className='canvas-img' src={canvasImg} alt='' />
+    </div>
+  );
   // return <canvas ref={canvasRef} />
   // console.log(canvasImg)
   // return (
   //   <canvas id="canvas"></canvas>)
 }
 
-function AddTextButton(){
+function AddTextButton() {}
 
-}
+function FrontImageButton() {}
 
-function FrontImageButton(){
+function NextButton() {}
 
-}
-
-function NextButton(){
-
-}
-
-function SearchBar({setCanvasImg}) {
+function SearchBar({ setCanvasImg }) {
   const [text, setText] = useState("");
   const [query, setQuery] = useState("");
   const handleSubmit = (e) => {
@@ -83,14 +79,18 @@ function SearchBar({setCanvasImg}) {
         />
         <button>Search</button>
       </form>
-      <FrontCard token={token.token} query={query} setCanvasImg={setCanvasImg} />
+      <FrontCard
+        token={token.token}
+        query={query}
+        setCanvasImg={setCanvasImg}
+      />
     </div>
   );
 }
 
 function FrontCard({ token, query, setCanvasImg }) {
   const [img, setImg] = useState([]);
-  
+
   useEffect(() => {
     axios
       .get(`https://api.unsplash.com/search/photos?query=${query}`, {
@@ -109,7 +109,7 @@ function FrontCard({ token, query, setCanvasImg }) {
   }, [token, query]);
 
   const handleClick = (i) => {
-    console.log("Clicked")
+    console.log("Clicked");
     setCanvasImg(i.imgUrl);
   };
 
@@ -134,15 +134,19 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div className='homepage'>
-        {img.map((i) => (
-          <img
-            onClick={() => handleClick(i)}
-            className='front-card'
-            src={i.imgUrl}
-            alt='work please'
-          />
-        ))}
+      <div>
+        <ul className='search-returns'>
+          {img.map((i) => (
+            <div className='search-wrapper'>
+              <img
+                className='search-element'
+                onClick={() => handleClick(i)}
+                src={i.imgUrl}
+                alt='work please'
+              />
+            </div>
+          ))}
+        </ul>
       </div>
     )
   );
