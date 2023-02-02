@@ -46,12 +46,11 @@ function ImageCanvas({canvasImg}){
 
   // ctx.drawImage( <img src={canvasImg} alt="pls work"/>,0,0)
 
-
+  return <img src={canvasImg} alt=""/>
   // return <canvas ref={canvasRef} />
-  console.log(canvasImg)
-  return (
-    <canvas id="canvas"></canvas>
-  )
+  // console.log(canvasImg)
+  // return (
+  //   <canvas id="canvas"></canvas>)
 }
 
 function AddTextButton(){
