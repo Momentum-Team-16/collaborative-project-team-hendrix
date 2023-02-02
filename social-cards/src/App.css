@@ -43,13 +43,13 @@ body,
 .search-wrapper {
   height: 150px;
   width: 150px;
-  object-fit: contain;
+  justify-content: center;
 }
 
 .search-element {
   height: 100%;
-
   object-fit: contain;
+  justify-content: center;
 }
 .search-bar {
 }
@@ -64,7 +64,7 @@ body,
   object-fit: contain;
 }
 .canvas {
-  padding: 5%;
   height: 250px;
   width: 250px;
+  border: solid 1px black;
 }
