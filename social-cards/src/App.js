@@ -32,8 +32,8 @@ function NewPost (){
         <NextButton/>
       </div>
       <ImageCanvas canvasImg={canvasImg}/>
-      <SearchBar />
-      <FrontCard setCanvasImg={setCanvasImg}/>
+      <SearchBar setCanvasImg={setCanvasImg}/>
+      
       
     </div>
   )
@@ -66,7 +66,7 @@ function NextButton(){
 
 }
 
-function SearchBar() {
+function SearchBar({setCanvasImg}) {
   const [text, setText] = useState("");
   const [query, setQuery] = useState("");
   const handleSubmit = (e) => {
@@ -84,7 +84,7 @@ function SearchBar() {
         />
         <button>Search</button>
       </form>
-      <FrontCard token={token.token} query={query} />
+      <FrontCard token={token.token} query={query} setCanvasImg={setCanvasImg} />
     </div>
   );
 }
