@@ -109,7 +109,6 @@ function FrontCard({ token, query, setCanvasImg }) {
   }, [token, query]);
 
   const handleClick = (i) => {
-    console.log("Clicked");
     setCanvasImg(i.imgUrl);
   };
 
@@ -135,10 +134,11 @@ function FrontCard({ token, query, setCanvasImg }) {
   return (
     img.length > 0 && (
       <div>
-        <ul className='search-returns'>
+        <ul key={query} className='search-returns'>
           {img.map((i) => (
             <div className='search-wrapper'>
               <img
+                key={i.imgUrl}
                 className='search-element'
                 onClick={() => handleClick(i)}
                 src={i.imgUrl}
