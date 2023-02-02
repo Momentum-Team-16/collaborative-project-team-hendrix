@@ -16,7 +16,7 @@ body,
   align-content: center;
 }
 
-.canvas {
+#canvas {
   border: solid 2px black;
   width: 500px;
   height: 750px;
