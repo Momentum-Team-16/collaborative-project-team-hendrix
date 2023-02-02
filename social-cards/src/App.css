@@ -12,21 +12,59 @@ body,
 .front-card:hover {
   border: 2px black solid;
 }
-.app {
+.App {
   align-content: center;
+  width: 75%;
+  height: 100%;
 }
 
-.canvas {
+#canvas {
   border: solid 2px black;
   width: 500px;
   height: 750px;
   align-content: center;
 }
 .wrapper {
-  display: grid;
-  grid-template-rows: (3fr, 1fr);
+  padding: 5px;
+
+  margin: 5px;
 }
 
 /* .search-bar {
   justify-content: center;
 } */
+.search-returns {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 5px;
+}
+
+.search-wrapper {
+  height: 150px;
+  width: 150px;
+  justify-content: center;
+}
+
+.search-element {
+  height: 100%;
+  object-fit: contain;
+  justify-content: center;
+}
+.search-bar {
+}
+.buttons {
+  width: 100%;
+  padding: 10%;
+}
+
+.canvas-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.canvas {
+  height: 250px;
+  width: 250px;
+  border: solid 1px black;
+}
