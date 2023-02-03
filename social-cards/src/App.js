@@ -135,7 +135,7 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div>
+      <div className='return-box'>
         <ul key={query} className='search-returns'>
           {img.map((i) => (
             <div className='search-wrapper'>
