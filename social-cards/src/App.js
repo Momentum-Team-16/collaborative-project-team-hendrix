@@ -69,8 +69,8 @@ function SearchBar({ setCanvasImg }) {
     setQuery(text);
   };
   return (
-    <div className='wrapper'>
-      <form onSubmit={handleSubmit}>
+    <>
+      <form className='form' onSubmit={handleSubmit}>
         <input
           className='search-bar'
           type='text'
@@ -79,12 +79,14 @@ function SearchBar({ setCanvasImg }) {
         />
         <button>Search</button>
       </form>
-      <FrontCard
-        token={token.token}
-        query={query}
-        setCanvasImg={setCanvasImg}
-      />
-    </div>
+      <div className='wrapper'>
+        <FrontCard
+          token={token.token}
+          query={query}
+          setCanvasImg={setCanvasImg}
+        />
+      </div>
+    </>
   );
 }
 
