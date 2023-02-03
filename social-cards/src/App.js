@@ -6,9 +6,14 @@ import he from "he";
 
 console.log(token.token);
 function App() {
+  const [loginToken, setToken] = useState(null);
+
+  if (loginToken === null) {
+    return <LogIn setToken={setToken} />;
+  }
   return (
-    <div className='App'>
-      <NewPost />
+    <div className="App">
+      <NewPost loginToken={loginToken} />
     </div>
   );
 }
@@ -22,11 +27,12 @@ function App() {
 //   );
 // }
 
-function NewPost() {
+function NewPost({ loginToken }) {
   const [canvasImg, setCanvasImg] = useState(null);
   return (
-    <div className='new-post'>
-      <div className='buttons'>
+    <div className="new-post">
+      <div className="buttons">
+        <SaveButton loginToken={loginToken} canvasImg={canvasImg} />
         <FrontImageButton />
         <AddTextButton />
         <NextButton />
@@ -45,8 +51,8 @@ function ImageCanvas({ canvasImg }) {
   // ctx.drawImage( <img src={canvasImg} alt="pls work"/>,0,0)
 
   return (
-    <div className='canvas'>
-      <img className='canvas-img' src={canvasImg} alt='' />
+    <div className="canvas">
+      <img className="canvas-img" src={canvasImg} alt="" />
     </div>
   );
   // return <canvas ref={canvasRef} />
@@ -55,11 +61,68 @@ function ImageCanvas({ canvasImg }) {
   //   <canvas id="canvas"></canvas>)
 }
 
+function LogIn({ setToken }) {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://social-cards-wg2j.onrender.com/auth/token/login", {
+        username: `${username}`,
+        password: `${password}`,
+      })
+      .then((res) => {
+        setToken(res.data.auth_token);
+      });
+  };
+  return (
+    <div className="login">
+      <form onSubmit={handleSubmit} className="login-field">
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button>Log In</button>
+      </form>
+    </div>
+  );
+}
+
+// TOOLBAR @ TOP STARTS HERE
 function AddTextButton() {}
 
 function FrontImageButton() {}
 
 function NextButton() {}
+
+function SaveButton({ loginToken, canvasImg }) {
+  const handleClick = (e) => {
+    console.log(canvasImg);
+    axios.post(
+      "https://social-cards-wg2j.onrender.com/cards/me/",
+      {
+        title: "test",
+        front_image: `${canvasImg}`,
+      },
+      {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      }
+    );
+  };
+  return <button onClick={handleClick}>Save</button>;
+}
 
 function SearchBar({ setCanvasImg }) {
   const [text, setText] = useState("");
@@ -70,16 +133,16 @@ function SearchBar({ setCanvasImg }) {
   };
   return (
     <>
-      <form className='form' onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <input
-          className='search-bar'
-          type='text'
+          className="search-bar"
+          type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button>Search</button>
       </form>
-      <div className='wrapper'>
+      <div className="wrapper">
         <FrontCard
           token={token.token}
           query={query}
@@ -135,16 +198,16 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div className='return-box'>
-        <ul key={query} className='search-returns'>
+      <div className="return-box">
+        <ul key={query} className="search-returns">
           {img.map((i) => (
-            <div className='search-wrapper'>
+            <div className="search-wrapper">
               <img
                 key={i.imgUrl}
-                className='search-element'
+                className="search-element"
                 onClick={() => handleClick(i)}
                 src={i.imgUrl}
-                alt='work please'
+                alt="work please"
               />
             </div>
           ))}
