@@ -1,16 +1,17 @@
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import token from "./token.json";
+import placeholder from "./no-cover-image.png";
 import he from "he";
 
-console.log(token.token);
 function App() {
   return (
     <div className='App'>
       <NewPost />
     </div>
   );
+  
 }
 
 // function Canvas({ canvasImg }) {
@@ -23,43 +24,71 @@ function App() {
 // }
 
 function NewPost() {
-  const [canvasImg, setCanvasImg] = useState(null);
+  const [canvasImg, setCanvasImg] = useState(placeholder);
+  const [bottomHalf, setBottomHalf] = useState('front-image')
+  const [selectedBorder, setSelectedBorder] = useState("none")
+
   return (
     <div className='new-post'>
       <div className='buttons'>
-        <FrontImageButton />
-        <AddTextButton />
-        <NextButton />
+        <FrontImageButton setBottomHalf={setBottomHalf}/>
+        <AddTextButton setBottomHalf={setBottomHalf}/>
+        <BorderButton setBottomHalf={setBottomHalf}/>
       </div>
-      <ImageCanvas canvasImg={canvasImg} />
-      <SearchBar setCanvasImg={setCanvasImg} />
+      <ImageCanvas 
+        canvasImg={canvasImg}
+        selectedBorder={selectedBorder} />
+      <BottomHalf 
+        bottomHalf={bottomHalf}
+        setCanvasImg={setCanvasImg}
+        selectedBorder={selectedBorder}
+        setSelectedBorder={setSelectedBorder}/>
+      
     </div>
   );
 }
 
-function ImageCanvas({ canvasImg }) {
-  // const canvasRef = useRef(null)
-  // const canvas = canvasRef.current
-  // const ctx = canvas.getContext('2d')
+function BottomHalf({bottomHalf, setCanvasImg, selectedBorder, setSelectedBorder}){
+  switch (bottomHalf){
+    case 'front-image':
+      return (<SearchBar setCanvasImg={setCanvasImg} />);
+    case 'add-text':
+      return (<TextSelect />)
+    case 'border-select':
+      return (
+        <BorderSelect
+          selectedBorder={selectedBorder}
+          setSelectedBorder={setSelectedBorder}/>)
+    default:
+      return
+  }
 
-  // ctx.drawImage( <img src={canvasImg} alt="pls work"/>,0,0)
-
-  return (
-    <div className='canvas'>
-      <img className='canvas-img' src={canvasImg} alt='' />
-    </div>
-  );
-  // return <canvas ref={canvasRef} />
-  // console.log(canvasImg)
-  // return (
-  //   <canvas id="canvas"></canvas>)
 }
 
-function AddTextButton() {}
+// TOOLBAR @ TOP STARTS HERE
+const FrontImageButton = ({setBottomHalf}) => (<button onClick={() => setBottomHalf('front-image')}>Front</button> )
+const AddTextButton = ({setBottomHalf}) => (<button onClick={() => setBottomHalf('text-select')}>Text</button>)
+const BorderButton = ({setBottomHalf}) => (<button onClick={() => setBottomHalf('border-select')}>Border</button>)
 
-function FrontImageButton() {}
+function ImageCanvas({canvasImg, selectedBorder }) {
+  if(selectedBorder === "none"){
+    return (
+      <div className='canvas'>
+        <img className='canvas-img' src={canvasImg} alt='' />
+      </div>
+    );
+  } else {
+    console.log(selectedBorder)
+    return (
+      <div className='canvas'>
+        <img style={{border:`5px solid ${selectedBorder}`}} className='canvas-img' src={canvasImg} alt='' />
+      </div>
+    );
+  }
+}
 
-function NextButton() {}
+
+
 
 function SearchBar({ setCanvasImg }) {
   const [text, setText] = useState("");
@@ -104,7 +133,7 @@ function FrontCard({ token, query, setCanvasImg }) {
       .then((res) => {
         setImg(
           res.data.results.map((obj) => ({
-            imgUrl: obj.urls.thumb,
+            imgUrl: obj.urls.small,
           }))
         );
       });
@@ -113,6 +142,26 @@ function FrontCard({ token, query, setCanvasImg }) {
   const handleClick = (i) => {
     setCanvasImg(i.imgUrl);
   };
+
+  return (
+    img.length > 0 && (
+      <div className='return-box'>
+        <ul key={query} className='search-returns'>
+          {img.map((i) => (
+            <div className='search-wrapper'>
+              <img
+                key={i.imgUrl}
+                className='search-element'
+                onClick={() => handleClick(i)}
+                src={i.imgUrl}
+                alt='search result'
+              />
+            </div>
+          ))}
+        </ul>
+      </div>
+    )
+  );
 
   // if (canvasImg != null) {
   //   return (
@@ -133,25 +182,45 @@ function FrontCard({ token, query, setCanvasImg }) {
   //   );
   // }
 
+  
+}
+
+
+function TextSelect(){
   return (
-    img.length > 0 && (
-      <div className='return-box'>
-        <ul key={query} className='search-returns'>
-          {img.map((i) => (
-            <div className='search-wrapper'>
-              <img
-                key={i.imgUrl}
-                className='search-element'
-                onClick={() => handleClick(i)}
-                src={i.imgUrl}
-                alt='work please'
-              />
-            </div>
-          ))}
-        </ul>
-      </div>
-    )
-  );
+ 
+    <div>
+       <select>
+         <option value="fruit">Fruit</option>
+         <option value="vegetable">Vegetable</option>
+         <option value="meat">Meat</option>
+       </select>
+     </div>
+  )
+}
+
+function BorderSelect(props){
+  return (
+    <div className="border-select">
+      <label htmlFor="border-color">Pick a Border Color
+        <select 
+            value={props.selectedBorder}
+            onChange={e => props.setSelectedBorder(e.target.value)}>
+          <option value="black">Black</option>
+          <option value-="red">Red</option>
+          <option value="green">Green</option>
+          <option value="purple">Purple</option>
+          <option value="blue">Blue</option>
+          <option value="yellow">Yellow</option>
+          <option value="orange">Orange</option>
+          <option value="pink">Pink</option>
+          <option value="white">White</option>
+          <option value="none">None</option>
+        </select>
+      </label>
+    </div>
+  )
+
 }
 
 export default App;
