@@ -38,6 +38,20 @@ body,
   transform: translate(-50%, -50%);
 }
 
+.front-text-top {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.front-text-bottom {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* .canvas {
   height: 250px;
   width: 250px;
@@ -116,7 +130,8 @@ body,
   padding: 5px;
 }
 
-.border-select {
+.border-select,
+.text-customizer {
   display: flex;
   justify-content: center;
   margin: 10px;

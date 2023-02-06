@@ -26,7 +26,8 @@ function NewPost() {
   const [canvasImg, setCanvasImg] = useState(placeholder);
   const [frontText, setFrontText] = useState(null);
   const [frontTextColor, setFrontTextColor] = useState("black");
-  
+  const [textAlign, setTextAlign] = useState("front-text");
+
   
   const [bottomHalf, setBottomHalf] = useState("front-image");
   const [borderColor, setBorderColor] = useState("black");
@@ -45,6 +46,9 @@ function NewPost() {
         borderColor={borderColor}
         borderStyle={borderStyle}
         frontText={frontText}
+        frontTextColor={frontTextColor}
+        textAlign={textAlign}
+  
       />
       <BottomHalf
         bottomHalf={bottomHalf}
@@ -54,6 +58,10 @@ function NewPost() {
         borderStyle={borderStyle}
         setBorderStyle={setBorderStyle}
         setFrontText={setFrontText}
+        frontTextColor={frontTextColor}
+        setFrontTextColor={setFrontTextColor}
+        textAlign={textAlign}
+        setTextAlign={setTextAlign}
       />
     </div>
   );
@@ -78,7 +86,14 @@ function BottomHalf(props) {
     case "front-image":
       return <SearchBar setCanvasImg={props.setCanvasImg} />;
     case "add-text":
-      return <TextInput setFrontText={props.setFrontText}/>;
+      return (
+        <TextInput 
+          setFrontText={props.setFrontText}
+          frontTextColor={props.frontTextColor}
+          setFrontTextColor={props.setFrontTextColor}
+          setTextAlign={props.setTextAlign}
+        />
+      )
     case "border-select":
       return (
         <BorderSelect
@@ -102,7 +117,11 @@ function ImageCanvas(props) {
     return (
       <div className="canvas">
         <img className="canvas-img" src={props.canvasImg} alt="" />
-        <div className="front-text">{props.frontText}</div>
+        <div className={props.textAlign}
+          style={{color: `${props.frontTextColor}`}}
+        >
+          {props.frontText}
+        </div>
         
       </div>
     );
@@ -115,7 +134,11 @@ function ImageCanvas(props) {
           src={props.canvasImg}
           alt=""
         />
-        <div className="front-text">{props.frontText}</div>
+        <div className={props.textAlign}
+          style={{color: `${props.frontTextColor}`}}
+        >
+          {props.frontText}
+        </div>
       </div>
     );
   }
@@ -219,22 +242,65 @@ function FrontCard({ token, query, setCanvasImg }) {
 //New post Text Font selection and Input?
 function TextInput(props) {
   const [textInputField, setTextInputField] = useState("Hello there!")
+  const [displayAlign, setDisplayAlign] = useState("")
 
   const handleText = (e) => {
     e.preventDefault();
     setTextInputField(e.target.value)
     props.setFrontText(e.target.value)
   }
+
+  const handleAlignment = (e) => {
+    console.log(e.target.value)
+    props.setTextAlign(e.target.value)
+    if(e.target.value === "front-text")
+      setDisplayAlign("Center")
+    if(e.target.value === "front-text-top")
+      setDisplayAlign("Top")
+    if(e.target.value === "front-text-bottom")
+      setDisplayAlign("Bottom")
+  }
   return (
-    <div className="front-input">
-      <input onChange={handleText}
-      value = {textInputField} />
+    <div className="text-customizer">
+      <div className="front-input">
+        <input onChange={handleText}
+        value = {textInputField} />
+      </div>
+      <label htmlFor="text-color">
+          <select
+            value={props.frontTextColor}
+            onChange={(e) => props.setFrontTextColor(e.target.value)}
+          >
+            <option value="black">Black</option>
+            <option value-="red">Red</option>
+            <option value="green">Green</option>
+            <option value="purple">Purple</option>
+            <option value="blue">Blue</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="white">White</option>
+          </select>
+        </label>
+
+        <label htmlFor="text-alignment">
+          <select
+            value={displayAlign}
+            onChange={handleAlignment} 
+          >
+            <option value="front-text">Center</option>
+            <option value-="front-text-top">Top</option>
+            <option value="front-text-bottom">Bottom</option>
+            
+          </select>
+        </label>  
     </div>
   );
 }
 
 //Customize Border Color and Style
 function BorderSelect(props) {
+  
   return (
     <div className="border-select">
       <>
