@@ -1,10 +1,10 @@
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import token from "./token.json";
+import placeholder from "./no-cover-image.png";
 import he from "he";
 
-console.log(token.token);
 function App() {
   const [loginToken, setToken] = useState(null);
 
@@ -28,37 +28,48 @@ function App() {
 // }
 
 function NewPost({ loginToken }) {
-  const [canvasImg, setCanvasImg] = useState(null);
+  const [canvasImg, setCanvasImg] = useState(placeholder);
+  const [frontText, setFrontText] = useState(null);
+  const [frontTextColor, setFrontTextColor] = useState("black");
+  const [textAlign, setTextAlign] = useState("center");
+
+  
+  const [bottomHalf, setBottomHalf] = useState("front-image");
+  const [borderColor, setBorderColor] = useState("black");
+  const [borderStyle, setBorderStyle] = useState("none");
   return (
     <div className="new-post">
-      <div className="buttons">
+      <div className="navbar">
         <SaveButton loginToken={loginToken} canvasImg={canvasImg} />
-        <FrontImageButton />
-        <AddTextButton />
-        <NextButton />
-      </div>
-      <ImageCanvas canvasImg={canvasImg} />
-      <SearchBar setCanvasImg={setCanvasImg} />
+        <FrontImageButton setBottomHalf={setBottomHalf} />
+        <BorderButton setBottomHalf={setBottomHalf} />
+        <AddTextButton setBottomHalf={setBottomHalf} />
+
+    </div>
+      <ImageCanvas
+        canvasImg={canvasImg}
+        borderColor={borderColor}
+        borderStyle={borderStyle}
+        frontText={frontText}
+        frontTextColor={frontTextColor}
+        textAlign={textAlign}
+  
+      />
+      <BottomHalf
+        bottomHalf={bottomHalf}
+        setCanvasImg={setCanvasImg}
+        borderColor={borderColor}
+        setBorderColor={setBorderColor}
+        borderStyle={borderStyle}
+        setBorderStyle={setBorderStyle}
+        setFrontText={setFrontText}
+        frontTextColor={frontTextColor}
+        setFrontTextColor={setFrontTextColor}
+        textAlign={textAlign}
+        setTextAlign={setTextAlign}
+      />
     </div>
   );
-}
-
-function ImageCanvas({ canvasImg }) {
-  // const canvasRef = useRef(null)
-  // const canvas = canvasRef.current
-  // const ctx = canvas.getContext('2d')
-
-  // ctx.drawImage( <img src={canvasImg} alt="pls work"/>,0,0)
-
-  return (
-    <div className="canvas">
-      <img className="canvas-img" src={canvasImg} alt="" />
-    </div>
-  );
-  // return <canvas ref={canvasRef} />
-  // console.log(canvasImg)
-  // return (
-  //   <canvas id="canvas"></canvas>)
 }
 
 function LogIn({ setToken }) {
@@ -98,12 +109,19 @@ function LogIn({ setToken }) {
   );
 }
 
-// TOOLBAR @ TOP STARTS HERE
-function AddTextButton() {}
 
-function FrontImageButton() {}
 
-function NextButton() {}
+
+// NAVBAR BUTTONS
+const FrontImageButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("front-image")}>Front</button>
+);
+const AddTextButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("add-text")}>Text</button>
+);
+const BorderButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("border-select")}>Border</button>
+);
 
 function SaveButton({ loginToken, canvasImg }) {
   const handleClick = (e) => {
@@ -124,6 +142,78 @@ function SaveButton({ loginToken, canvasImg }) {
   return <button onClick={handleClick}>Save</button>;
 }
 
+
+
+
+//RENDERS THE BOTTOM HALF OF THE NEW POST PAGE
+function BottomHalf(props) {
+  switch (props.bottomHalf) {
+    case "front-image":
+      return <SearchBar setCanvasImg={props.setCanvasImg} />;
+    case "add-text":
+      return (
+        <TextInput 
+          setFrontText={props.setFrontText}
+          frontTextColor={props.frontTextColor}
+          setFrontTextColor={props.setFrontTextColor}
+          setTextAlign={props.setTextAlign}
+        />
+      )
+    case "border-select":
+      return (
+        <BorderSelect
+          borderColor={props.borderColor}
+          setBorderColor={props.setBorderColor}
+          borderStyle={props.propsborderStyle}
+          setBorderStyle={props.setBorderStyle}
+        />
+      );
+    default:
+      return;
+  }
+}
+
+
+
+
+//NEW POST IMAGE
+function ImageCanvas(props) {
+  
+
+  if (props.borderStyle === "none") {
+    return (
+      <div className="canvas">
+        <img className="canvas-img" src={props.canvasImg} alt="" />
+        <div className={props.textAlign}
+          style={{color: `${props.frontTextColor}`}}
+        >
+          {props.frontText}
+        </div>
+        
+      </div>
+    );
+  } else {
+    return (
+      <div className="canvas">
+        <img
+          style={{ border: `5px ${props.borderStyle} ${props.borderColor}` }}
+          className="canvas-img"
+          src={props.canvasImg}
+          alt=""
+        />
+        <div className={props.textAlign}
+          style={{color: `${props.frontTextColor}`}}
+        >
+          {props.frontText}
+        </div>
+      </div>
+    );
+  }
+}
+
+
+
+//NEW POST IMAGE SEARCH
 function SearchBar({ setCanvasImg }) {
   const [text, setText] = useState("");
   const [query, setQuery] = useState("");
@@ -153,6 +243,7 @@ function SearchBar({ setCanvasImg }) {
   );
 }
 
+//RENDERING NEW POST SEARCH RESULTS
 function FrontCard({ token, query, setCanvasImg }) {
   const [img, setImg] = useState([]);
 
@@ -167,7 +258,7 @@ function FrontCard({ token, query, setCanvasImg }) {
       .then((res) => {
         setImg(
           res.data.results.map((obj) => ({
-            imgUrl: obj.urls.thumb,
+            imgUrl: obj.urls.small,
           }))
         );
       });
@@ -176,6 +267,26 @@ function FrontCard({ token, query, setCanvasImg }) {
   const handleClick = (i) => {
     setCanvasImg(i.imgUrl);
   };
+
+  return (
+    img.length > 0 && (
+      <div className="return-box">
+        <ul key={query} className="search-returns">
+          {img.map((i) => (
+            <div className="search-wrapper">
+              <img
+                key={i.imgUrl}
+                className="search-element"
+                onClick={() => handleClick(i)}
+                src={i.imgUrl}
+                alt="search result"
+              />
+            </div>
+          ))}
+        </ul>
+      </div>
+    )
+  );
 
   // if (canvasImg != null) {
   //   return (
@@ -195,25 +306,102 @@ function FrontCard({ token, query, setCanvasImg }) {
   //     </>
   //   );
   // }
+}
 
+//New post Text Font selection and Input?
+function TextInput(props) {
+  const [textInputField, setTextInputField] = useState("Hello there!")
+  const [displayAlign, setDisplayAlign] = useState("")
+  
+
+  const handleText = (e) => {
+    e.preventDefault();
+    setTextInputField(e.target.value)
+    props.setFrontText(e.target.value)
+  }
+
+  const handleAlignment = (e) => {
+    setDisplayAlign(e.target.value)
+    props.setTextAlign(e.target.value)
+    
+  }
   return (
-    img.length > 0 && (
-      <div className="return-box">
-        <ul key={query} className="search-returns">
-          {img.map((i) => (
-            <div className="search-wrapper">
-              <img
-                key={i.imgUrl}
-                className="search-element"
-                onClick={() => handleClick(i)}
-                src={i.imgUrl}
-                alt="work please"
-              />
-            </div>
-          ))}
-        </ul>
-      </div>
-    )
+    <div className="text-customizer">
+      <div className="front-input">
+        <input onChange={handleText}
+        value = {textInputField} />
+
+    </div>
+      <label htmlFor="text-color">
+          <select
+            value={props.frontTextColor}
+            onChange={(e) => props.setFrontTextColor(e.target.value)}
+          >
+            <option value="black">Black</option>
+            <option value-="red">Red</option>
+            <option value="green">Green</option>
+            <option value="purple">Purple</option>
+            <option value="blue">Blue</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="white">White</option>
+          </select>
+        </label>
+
+        <label htmlFor="text-alignment">
+          <select
+            value={displayAlign}
+            onChange={handleAlignment} 
+          >
+            <option value="center">Center</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+            
+          </select>
+        </label>  
+    </div>
+  );
+}
+
+//Customize Border Color and Style
+function BorderSelect(props) {
+  
+  return (
+    <div className="border-select">
+      <>
+        <label htmlFor="border-style">
+          Pick a Border Style
+          <select
+            value={props.borderStyle}
+            onChange={(e) => props.setBorderStyle(e.target.value)}
+          >
+            <option value="none">None</option>
+            <option value="solid">Solid</option>
+            <option value-="dotted">Dotted</option>
+            <option value="double">Double</option>
+          </select>
+        </label>
+        
+        <label htmlFor="border-color">
+          Pick a Border Color
+          <select
+            value={props.borderColor}
+            onChange={(e) => props.setBorderColor(e.target.value)}
+          >
+            <option value="black">Black</option>
+            <option value-="red">Red</option>
+            <option value="green">Green</option>
+            <option value="purple">Purple</option>
+            <option value="blue">Blue</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="white">White</option>
+          </select>
+        </label>
+      </>
+    </div>
   );
 }
 

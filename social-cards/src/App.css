@@ -20,13 +20,45 @@ body,
 }
 
 .canvas {
-  border: solid 2px black;
-  width: 100%;
-  height: 100%;
+  /* border: solid 2px black; */
+  height: 300px;
+  /* width: 300px; */
   align-content: center;
   display: flex;
-  margin: auto;
+  margin: 0 auto;
+
+  position: relative;
+  text-align: center;
 }
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.top {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bottom {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* .canvas {
+  height: 250px;
+  width: 250px;
+  border: solid 1px black; 
+  justify-content: center;
+} */
+
 .wrapper {
   padding: 5px;
   display: flex;
@@ -77,19 +109,35 @@ body,
 .search-bar {
   width: 100%;
 }
-.buttons {
+.navbar {
   width: 100%;
-  padding: 10%;
+  padding: 2%;
+  justify-content: center;
+  display: flex;
 }
 
+/* OLD CSS for canvas image
 .canvas-img {
   height: 100%;
   width: 100%;
   object-fit: contain;
+  border-radius: 10px;
+  padding: 3px;
+} */
+
+.canvas-img {
+  margin: 0 auto;
+  padding: 5px;
 }
-.canvas {
-  height: 250px;
-  width: 250px;
-  border: solid 1px black;
+
+.border-select,
+.text-customizer {
+  display: flex;
   justify-content: center;
+  margin: 10px;
+}
+
+.border-style,
+.border-color {
+  margin: 1%;
 }
