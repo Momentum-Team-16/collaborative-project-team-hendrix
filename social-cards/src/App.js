@@ -6,9 +6,14 @@ import placeholder from "./no-cover-image.png";
 import he from "he";
 
 function App() {
+  const [loginToken, setToken] = useState(null);
+
+  if (loginToken === null) {
+    return <LogIn setToken={setToken} />;
+  }
   return (
     <div className="App">
-      <NewPost />
+      <NewPost loginToken={loginToken} />
     </div>
   );
 }
@@ -22,7 +27,7 @@ function App() {
 //   );
 // }
 
-function NewPost() {
+function NewPost({ loginToken }) {
   const [canvasImg, setCanvasImg] = useState(placeholder);
   const [frontText, setFrontText] = useState(null);
   const [frontTextColor, setFrontTextColor] = useState("black");
@@ -32,15 +37,15 @@ function NewPost() {
   const [bottomHalf, setBottomHalf] = useState("front-image");
   const [borderColor, setBorderColor] = useState("black");
   const [borderStyle, setBorderStyle] = useState("none");
-  
-
   return (
     <div className="new-post">
       <div className="navbar">
+        <SaveButton loginToken={loginToken} canvasImg={canvasImg} />
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
         <AddTextButton setBottomHalf={setBottomHalf} />
-      </div>
+
+    </div>
       <ImageCanvas
         canvasImg={canvasImg}
         borderColor={borderColor}
@@ -67,6 +72,46 @@ function NewPost() {
   );
 }
 
+function LogIn({ setToken }) {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://social-cards-wg2j.onrender.com/auth/token/login", {
+        username: `${username}`,
+        password: `${password}`,
+      })
+      .then((res) => {
+        setToken(res.data.auth_token);
+      });
+  };
+  return (
+    <div className="login">
+      <form onSubmit={handleSubmit} className="login-field">
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button>Log In</button>
+      </form>
+    </div>
+  );
+}
+
+
+
+
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
   <button onClick={() => setBottomHalf("front-image")}>Front</button>
@@ -77,6 +122,26 @@ const AddTextButton = ({ setBottomHalf }) => (
 const BorderButton = ({ setBottomHalf }) => (
   <button onClick={() => setBottomHalf("border-select")}>Border</button>
 );
+
+function SaveButton({ loginToken, canvasImg }) {
+  const handleClick = (e) => {
+    console.log(canvasImg);
+    axios.post(
+      "https://social-cards-wg2j.onrender.com/cards/me/",
+      {
+        title: "test",
+        front_image: `${canvasImg}`,
+      },
+      {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      }
+    );
+  };
+  return <button onClick={handleClick}>Save</button>;
+}
+
 
 
 
@@ -107,6 +172,8 @@ function BottomHalf(props) {
       return;
   }
 }
+
+
 
 
 //NEW POST IMAGE
@@ -143,6 +210,8 @@ function ImageCanvas(props) {
     );
   }
 }
+
+
 
 //NEW POST IMAGE SEARCH
 function SearchBar({ setCanvasImg }) {
@@ -261,7 +330,8 @@ function TextInput(props) {
       <div className="front-input">
         <input onChange={handleText}
         value = {textInputField} />
-      </div>
+
+    </div>
       <label htmlFor="text-color">
           <select
             value={props.frontTextColor}
