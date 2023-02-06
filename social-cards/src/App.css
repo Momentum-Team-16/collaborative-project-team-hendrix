@@ -85,9 +85,12 @@ body,
 .search-bar {
   width: 100%;
 }
-.buttons {
+.navbar {
   width: 100%;
   padding: 2%;
+  justify-content: center;
+  display: flex;
+  margin: 10px;
 }
 
 /* OLD CSS
@@ -102,4 +105,15 @@ body,
 .canvas-img {
   margin: 0 auto;
   padding: 5px;
+}
+
+.border-select {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.border-style,
+.border-color {
+  margin: 1%;
 }
