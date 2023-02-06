@@ -31,21 +31,21 @@ body,
   text-align: center;
 }
 
-.front-text {
+.center {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.front-text-top {
+.top {
   position: absolute;
-  top: 5%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.front-text-bottom {
+.bottom {
   position: absolute;
   top: 90%;
   left: 50%;

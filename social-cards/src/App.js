@@ -26,7 +26,7 @@ function NewPost() {
   const [canvasImg, setCanvasImg] = useState(placeholder);
   const [frontText, setFrontText] = useState(null);
   const [frontTextColor, setFrontTextColor] = useState("black");
-  const [textAlign, setTextAlign] = useState("front-text");
+  const [textAlign, setTextAlign] = useState("center");
 
   
   const [bottomHalf, setBottomHalf] = useState("front-image");
@@ -243,6 +243,7 @@ function FrontCard({ token, query, setCanvasImg }) {
 function TextInput(props) {
   const [textInputField, setTextInputField] = useState("Hello there!")
   const [displayAlign, setDisplayAlign] = useState("")
+  
 
   const handleText = (e) => {
     e.preventDefault();
@@ -251,14 +252,9 @@ function TextInput(props) {
   }
 
   const handleAlignment = (e) => {
-    console.log(e.target.value)
+    setDisplayAlign(e.target.value)
     props.setTextAlign(e.target.value)
-    if(e.target.value === "front-text")
-      setDisplayAlign("Center")
-    if(e.target.value === "front-text-top")
-      setDisplayAlign("Top")
-    if(e.target.value === "front-text-bottom")
-      setDisplayAlign("Bottom")
+    
   }
   return (
     <div className="text-customizer">
@@ -288,9 +284,9 @@ function TextInput(props) {
             value={displayAlign}
             onChange={handleAlignment} 
           >
-            <option value="front-text">Center</option>
-            <option value-="front-text-top">Top</option>
-            <option value="front-text-bottom">Bottom</option>
+            <option value="center">Center</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
             
           </select>
         </label>  
@@ -313,7 +309,7 @@ function BorderSelect(props) {
             <option value="none">None</option>
             <option value="solid">Solid</option>
             <option value-="dotted">Dotted</option>
-            <option value="Double">Double</option>
+            <option value="double">Double</option>
           </select>
         </label>
         
