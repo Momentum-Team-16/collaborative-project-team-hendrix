@@ -24,21 +24,27 @@ function App() {
 
 function NewPost() {
   const [canvasImg, setCanvasImg] = useState(placeholder);
+  const [frontText, setFrontText] = useState(null);
+  const [frontTextColor, setFrontTextColor] = useState("black");
+  
+  
   const [bottomHalf, setBottomHalf] = useState("front-image");
   const [borderColor, setBorderColor] = useState("black");
   const [borderStyle, setBorderStyle] = useState("none");
+  
 
   return (
     <div className="new-post">
       <div className="navbar">
         <FrontImageButton setBottomHalf={setBottomHalf} />
-        <AddTextButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
+        <AddTextButton setBottomHalf={setBottomHalf} />
       </div>
       <ImageCanvas
         canvasImg={canvasImg}
         borderColor={borderColor}
         borderStyle={borderStyle}
+        frontText={frontText}
       />
       <BottomHalf
         bottomHalf={bottomHalf}
@@ -47,10 +53,24 @@ function NewPost() {
         setBorderColor={setBorderColor}
         borderStyle={borderStyle}
         setBorderStyle={setBorderStyle}
+        setFrontText={setFrontText}
       />
     </div>
   );
 }
+
+// NAVBAR BUTTONS
+const FrontImageButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("front-image")}>Front</button>
+);
+const AddTextButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("add-text")}>Text</button>
+);
+const BorderButton = ({ setBottomHalf }) => (
+  <button onClick={() => setBottomHalf("border-select")}>Border</button>
+);
+
+
 
 //RENDERS THE BOTTOM HALF OF THE NEW POST PAGE
 function BottomHalf(props) {
@@ -58,7 +78,7 @@ function BottomHalf(props) {
     case "front-image":
       return <SearchBar setCanvasImg={props.setCanvasImg} />;
     case "add-text":
-      return <TextSelect />;
+      return <TextInput setFrontText={props.setFrontText}/>;
     case "border-select":
       return (
         <BorderSelect
@@ -73,27 +93,20 @@ function BottomHalf(props) {
   }
 }
 
-// NAVBAR BUTTONS
-const FrontImageButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("front-image")}>Front</button>
-);
-const AddTextButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("text-select")}>Text</button>
-);
-const BorderButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("border-select")}>Border</button>
-);
 
 //NEW POST IMAGE
 function ImageCanvas(props) {
+  
+
   if (props.borderStyle === "none") {
     return (
       <div className="canvas">
         <img className="canvas-img" src={props.canvasImg} alt="" />
+        <div className="front-text">{props.frontText}</div>
+        
       </div>
     );
   } else {
-    console.log(props.borderColor);
     return (
       <div className="canvas">
         <img
@@ -102,6 +115,7 @@ function ImageCanvas(props) {
           src={props.canvasImg}
           alt=""
         />
+        <div className="front-text">{props.frontText}</div>
       </div>
     );
   }
@@ -203,14 +217,18 @@ function FrontCard({ token, query, setCanvasImg }) {
 }
 
 //New post Text Font selection and Input?
-function TextSelect() {
+function TextInput(props) {
+  const [textInputField, setTextInputField] = useState("Hello there!")
+
+  const handleText = (e) => {
+    e.preventDefault();
+    setTextInputField(e.target.value)
+    props.setFrontText(e.target.value)
+  }
   return (
-    <div>
-      <select>
-        <option value="fruit">Fruit</option>
-        <option value="vegetable">Vegetable</option>
-        <option value="meat">Meat</option>
-      </select>
+    <div className="front-input">
+      <input onChange={handleText}
+      value = {textInputField} />
     </div>
   );
 }
