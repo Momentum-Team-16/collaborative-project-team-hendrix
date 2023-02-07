@@ -30,9 +30,8 @@ function NewPost({ loginToken, setNewPost }) {
     return <Navigate to="/login" />;
   }
   return (
-
-    <div className='new-post'>
-      <div className='navbar'>
+    <div className="new-post">
+      <div className="navbar">
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
         <AddTextButton setBottomHalf={setBottomHalf} />
@@ -45,7 +44,6 @@ function NewPost({ loginToken, setNewPost }) {
           borderColor={borderColor}
           borderStyle={borderStyle}
           setNewPost={setNewPost}
-
         />
       </div>
       <ImageCanvas
@@ -104,31 +102,33 @@ function SaveButton({
   borderColor,
   borderStyle,
   setNewPost,
-
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
     console.log(canvasImg);
     console.log(frontText, frontTextColor, borderColor);
-    axios.post(
-      "https://social-cards-wg2j.onrender.com/cards/me/",
-      {
-        title: "test",
-        front_image: `${canvasImg}`,
-        front_message: `${frontText}`,
-        text_color: `${frontTextColor}`,
-        border_color: `${borderColor}`,
-        text_align: `${textAlign}`,
-        border_style: `${borderStyle}`,
-        font: `${textFont}`
-      },
-      {
-        headers: {
-          authorization: `token ${loginToken}`,
+    axios
+      .post(
+        "https://social-cards-wg2j.onrender.com/cards/me/",
+        {
+          title: "test",
+          front_image: `${canvasImg}`,
+          front_message: `${frontText}`,
+          text_color: `${frontTextColor}`,
+          border_color: `${borderColor}`,
+          text_align: `${textAlign}`,
+          border_style: `${borderStyle}`,
+          font: `${textFont}`,
         },
-      }
-    );
-    navigate("/");
+        {
+          headers: {
+            authorization: `token ${loginToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        navigate("/");
+      });
   };
   return (
     <button className="effect" onClick={handleClick}>
@@ -151,7 +151,6 @@ function BottomHalf(props) {
           setTextAlign={props.setTextAlign}
           textFont={props.textFont}
           setTextFont={props.setTextFont}
-
         />
       );
     case "border-select":
@@ -171,17 +170,18 @@ function BottomHalf(props) {
 //NEW POST IMAGE
 function ImageCanvas(props) {
   // if(props.textFont === "sans-serif")
-  
+
   if (props.borderStyle === "none") {
     return (
       <div className="canvas">
         <img className="canvas-img" src={props.canvasImg} alt="" />
         <div
           className={props.textAlign}
-          style={{ 
+          style={{
             color: `${props.frontTextColor}`,
-            fontFamily: `${props.textFont}`
-          }}>
+            fontFamily: `${props.textFont}`,
+          }}
+        >
           {props.frontText}
         </div>
       </div>
@@ -197,9 +197,11 @@ function ImageCanvas(props) {
         />
         <div
           className={props.textAlign}
-          style={{ 
+          style={{
             color: `${props.frontTextColor}`,
-            fontFamily: `${props.textFont}` }}>
+            fontFamily: `${props.textFont}`,
+          }}
+        >
           {props.frontText}
         </div>
       </div>
@@ -353,12 +355,12 @@ function TextInput(props) {
           <option value="bottom">Bottom</option>
         </select>
       </label>
-      <label htmlFor='text-font'>
+      <label htmlFor="text-font">
         <select value={displayFont} onChange={handleFont}>
-          <option value='sans-serif'>Sans Serif</option>
-          <option value='serif'>Serif</option>
-          <option value='monospace'>Monospace</option>
-          <option value='cursive'>Cursive</option>
+          <option value="sans-serif">Sans Serif</option>
+          <option value="serif">Serif</option>
+          <option value="monospace">Monospace</option>
+          <option value="cursive">Cursive</option>
         </select>
       </label>
     </div>
