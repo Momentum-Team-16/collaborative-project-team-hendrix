@@ -4,6 +4,7 @@ import axios from "axios";
 import token from "./token.json";
 import placeholder from "./no-cover-image.png";
 import he from "he";
+import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
 
 // function Canvas({ canvasImg }) {
 //   drawImage(canvasImg);
@@ -16,7 +17,7 @@ import he from "he";
 
 function NewPost({ loginToken, setNewPost }) {
   const [canvasImg, setCanvasImg] = useState(placeholder);
-  const [frontText, setFrontText] = useState(null);
+  const [frontText, setFrontText] = useState("");
   const [frontTextColor, setFrontTextColor] = useState("black");
   const [textAlign, setTextAlign] = useState("center");
   const [textFont, setTextFont] = useState("sans-serif");
@@ -24,7 +25,12 @@ function NewPost({ loginToken, setNewPost }) {
   const [bottomHalf, setBottomHalf] = useState("front-image");
   const [borderColor, setBorderColor] = useState("black");
   const [borderStyle, setBorderStyle] = useState("none");
+
+  if (!loginToken) {
+    return <Navigate to="/login" />;
+  }
   return (
+
     <div className='new-post'>
       <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
@@ -73,13 +79,19 @@ function NewPost({ loginToken, setNewPost }) {
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("front-image")}>Front</button>
+  <button className="effect" onClick={() => setBottomHalf("front-image")}>
+    Front
+  </button>
 );
 const AddTextButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("add-text")}>Text</button>
+  <button className="effect" onClick={() => setBottomHalf("add-text")}>
+    Text
+  </button>
 );
 const BorderButton = ({ setBottomHalf }) => (
-  <button onClick={() => setBottomHalf("border-select")}>Border</button>
+  <button className="effect" onClick={() => setBottomHalf("border-select")}>
+    Border
+  </button>
 );
 
 function SaveButton({
@@ -94,6 +106,7 @@ function SaveButton({
   setNewPost,
 
 }) {
+  const navigate = useNavigate();
   const handleClick = (e) => {
     console.log(canvasImg);
     console.log(frontText, frontTextColor, borderColor);
@@ -115,9 +128,13 @@ function SaveButton({
         },
       }
     );
-    setNewPost(false);
+    navigate("/");
   };
-  return <button onClick={handleClick}>Save</button>;
+  return (
+    <button className="effect" onClick={handleClick}>
+      Save
+    </button>
+  );
 }
 
 //RENDERS THE BOTTOM HALF OF THE NEW POST PAGE
@@ -157,8 +174,8 @@ function ImageCanvas(props) {
   
   if (props.borderStyle === "none") {
     return (
-      <div className='canvas'>
-        <img className='canvas-img' src={props.canvasImg} alt='' />
+      <div className="canvas">
+        <img className="canvas-img" src={props.canvasImg} alt="" />
         <div
           className={props.textAlign}
           style={{ 
@@ -171,12 +188,12 @@ function ImageCanvas(props) {
     );
   } else {
     return (
-      <div className='canvas'>
+      <div className="canvas">
         <img
           style={{ border: `5px ${props.borderStyle} ${props.borderColor}` }}
-          className='canvas-img'
+          className="canvas-img"
           src={props.canvasImg}
-          alt=''
+          alt=""
         />
         <div
           className={props.textAlign}
@@ -200,16 +217,16 @@ function SearchBar({ setCanvasImg }) {
   };
   return (
     <>
-      <form className='form' onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <input
-          className='search-bar'
-          type='text'
+          className="search-bar"
+          type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button>Search</button>
       </form>
-      <div className='wrapper'>
+      <div className="wrapper">
         <FrontCard
           token={token.token}
           query={query}
@@ -247,16 +264,16 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div className='return-box'>
-        <ul key={query} className='search-returns'>
+      <div className="return-box">
+        <ul key={query} className="search-returns">
           {img.map((i) => (
-            <div className='search-wrapper'>
+            <div className="search-wrapper">
               <img
                 key={i.imgUrl}
-                className='search-element'
+                className="search-element"
                 onClick={() => handleClick(i)}
                 src={i.imgUrl}
-                alt='search result'
+                alt="search result"
               />
             </div>
           ))}
@@ -308,32 +325,32 @@ function TextInput(props) {
   };
 
   return (
-    <div className='text-customizer'>
-      <div className='front-input'>
+    <div className="text-customizer">
+      <div className="front-input">
         <input onChange={handleText} value={textInputField} />
       </div>
-      <label htmlFor='text-color'>
+      <label htmlFor="text-color">
         <select
           value={props.frontTextColor}
           onChange={(e) => props.setFrontTextColor(e.target.value)}
         >
-          <option value='black'>Black</option>
-          <option value-='red'>Red</option>
-          <option value='green'>Green</option>
-          <option value='purple'>Purple</option>
-          <option value='blue'>Blue</option>
-          <option value='yellow'>Yellow</option>
-          <option value='orange'>Orange</option>
-          <option value='pink'>Pink</option>
-          <option value='white'>White</option>
+          <option value="black">Black</option>
+          <option value-="red">Red</option>
+          <option value="green">Green</option>
+          <option value="purple">Purple</option>
+          <option value="blue">Blue</option>
+          <option value="yellow">Yellow</option>
+          <option value="orange">Orange</option>
+          <option value="pink">Pink</option>
+          <option value="white">White</option>
         </select>
       </label>
 
-      <label htmlFor='text-alignment'>
+      <label htmlFor="text-alignment">
         <select value={displayAlign} onChange={handleAlignment}>
-          <option value='center'>Center</option>
-          <option value='top'>Top</option>
-          <option value='bottom'>Bottom</option>
+          <option value="center">Center</option>
+          <option value="top">Top</option>
+          <option value="bottom">Bottom</option>
         </select>
       </label>
       <label htmlFor='text-font'>
@@ -351,36 +368,36 @@ function TextInput(props) {
 //Customize Border Color and Style
 function BorderSelect(props) {
   return (
-    <div className='border-select'>
+    <div className="border-select">
       <>
-        <label htmlFor='border-style'>
+        <label htmlFor="border-style">
           Pick a Border Style
           <select
             value={props.borderStyle}
             onChange={(e) => props.setBorderStyle(e.target.value)}
           >
-            <option value='none'>None</option>
-            <option value='solid'>Solid</option>
-            <option value-='dotted'>Dotted</option>
-            <option value='double'>Double</option>
+            <option value="none">None</option>
+            <option value="solid">Solid</option>
+            <option value-="dotted">Dotted</option>
+            <option value="double">Double</option>
           </select>
         </label>
 
-        <label htmlFor='border-color'>
+        <label htmlFor="border-color">
           Pick a Border Color
           <select
             value={props.borderColor}
             onChange={(e) => props.setBorderColor(e.target.value)}
           >
-            <option value='black'>Black</option>
-            <option value-='red'>Red</option>
-            <option value='green'>Green</option>
-            <option value='purple'>Purple</option>
-            <option value='blue'>Blue</option>
-            <option value='yellow'>Yellow</option>
-            <option value='orange'>Orange</option>
-            <option value='pink'>Pink</option>
-            <option value='white'>White</option>
+            <option value="black">Black</option>
+            <option value-="red">Red</option>
+            <option value="green">Green</option>
+            <option value="purple">Purple</option>
+            <option value="blue">Blue</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="white">White</option>
           </select>
         </label>
       </>

@@ -4,10 +4,13 @@ import axios from "axios";
 import { useState } from "react";
 import token from "./token.json";
 import he from "he";
+import { useNavigate, Link, Route, Routes } from "react-router-dom";
 
 function LogIn({ setToken }) {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,10 +21,13 @@ function LogIn({ setToken }) {
       })
       .then((res) => {
         setToken(res.data.auth_token);
-      });
+        navigate(-1);
+      })
+      .catch((e) => setError(e));
   };
   return (
     <div className="login">
+      {error && <p>{error.message}</p>}
       <form onSubmit={handleSubmit} className="login-field">
         <label htmlFor="username">Username</label>
         <input
