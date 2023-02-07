@@ -20,6 +20,7 @@ function NewPost({ loginToken, setNewPost }) {
   const [frontText, setFrontText] = useState("");
   const [frontTextColor, setFrontTextColor] = useState("black");
   const [textAlign, setTextAlign] = useState("center");
+  const [textFont, setTextFont] = useState("sans-serif");
 
   const [bottomHalf, setBottomHalf] = useState("front-image");
   const [borderColor, setBorderColor] = useState("black");
@@ -29,8 +30,9 @@ function NewPost({ loginToken, setNewPost }) {
     return <Navigate to="/login" />;
   }
   return (
-    <div className="new-post">
-      <div className="navbar">
+
+    <div className='new-post'>
+      <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
         <AddTextButton setBottomHalf={setBottomHalf} />
@@ -43,6 +45,7 @@ function NewPost({ loginToken, setNewPost }) {
           borderColor={borderColor}
           borderStyle={borderStyle}
           setNewPost={setNewPost}
+
         />
       </div>
       <ImageCanvas
@@ -52,6 +55,8 @@ function NewPost({ loginToken, setNewPost }) {
         frontText={frontText}
         frontTextColor={frontTextColor}
         textAlign={textAlign}
+        textFont={textFont}
+        setTextFont={setTextFont}
       />
       <BottomHalf
         bottomHalf={bottomHalf}
@@ -65,6 +70,8 @@ function NewPost({ loginToken, setNewPost }) {
         setFrontTextColor={setFrontTextColor}
         textAlign={textAlign}
         setTextAlign={setTextAlign}
+        textFont={textFont}
+        setTextFont={setTextFont}
       />
     </div>
   );
@@ -93,9 +100,11 @@ function SaveButton({
   frontText,
   frontTextColor,
   textAlign,
+  textFont,
   borderColor,
   borderStyle,
   setNewPost,
+
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
@@ -111,6 +120,7 @@ function SaveButton({
         border_color: `${borderColor}`,
         text_align: `${textAlign}`,
         border_style: `${borderStyle}`,
+        font: `${textFont}`
       },
       {
         headers: {
@@ -139,6 +149,9 @@ function BottomHalf(props) {
           frontTextColor={props.frontTextColor}
           setFrontTextColor={props.setFrontTextColor}
           setTextAlign={props.setTextAlign}
+          textFont={props.textFont}
+          setTextFont={props.setTextFont}
+
         />
       );
     case "border-select":
@@ -157,14 +170,18 @@ function BottomHalf(props) {
 
 //NEW POST IMAGE
 function ImageCanvas(props) {
+  // if(props.textFont === "sans-serif")
+  
   if (props.borderStyle === "none") {
     return (
       <div className="canvas">
         <img className="canvas-img" src={props.canvasImg} alt="" />
         <div
           className={props.textAlign}
-          style={{ color: `${props.frontTextColor}` }}
-        >
+          style={{ 
+            color: `${props.frontTextColor}`,
+            fontFamily: `${props.textFont}`
+          }}>
           {props.frontText}
         </div>
       </div>
@@ -180,8 +197,9 @@ function ImageCanvas(props) {
         />
         <div
           className={props.textAlign}
-          style={{ color: `${props.frontTextColor}` }}
-        >
+          style={{ 
+            color: `${props.frontTextColor}`,
+            fontFamily: `${props.textFont}` }}>
           {props.frontText}
         </div>
       </div>
@@ -288,6 +306,7 @@ function FrontCard({ token, query, setCanvasImg }) {
 function TextInput(props) {
   const [textInputField, setTextInputField] = useState("Input text here!");
   const [displayAlign, setDisplayAlign] = useState("");
+  const [displayFont, setDisplayFont] = useState("");
 
   const handleText = (e) => {
     e.preventDefault();
@@ -299,6 +318,12 @@ function TextInput(props) {
     setDisplayAlign(e.target.value);
     props.setTextAlign(e.target.value);
   };
+
+  const handleFont = (e) => {
+    setDisplayFont(e.target.value);
+    props.setTextFont(e.target.value);
+  };
+
   return (
     <div className="text-customizer">
       <div className="front-input">
@@ -326,6 +351,14 @@ function TextInput(props) {
           <option value="center">Center</option>
           <option value="top">Top</option>
           <option value="bottom">Bottom</option>
+        </select>
+      </label>
+      <label htmlFor='text-font'>
+        <select value={displayFont} onChange={handleFont}>
+          <option value='sans-serif'>Sans Serif</option>
+          <option value='serif'>Serif</option>
+          <option value='monospace'>Monospace</option>
+          <option value='cursive'>Cursive</option>
         </select>
       </label>
     </div>
