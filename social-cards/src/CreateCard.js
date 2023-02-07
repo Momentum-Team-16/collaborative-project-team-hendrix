@@ -88,9 +88,11 @@ function SaveButton({
   frontText,
   frontTextColor,
   textAlign,
+  textFont,
   borderColor,
   borderStyle,
   setNewPost,
+
 }) {
   const handleClick = (e) => {
     console.log(canvasImg);
@@ -105,6 +107,7 @@ function SaveButton({
         border_color: `${borderColor}`,
         text_align: `${textAlign}`,
         border_style: `${borderStyle}`,
+        font: `${textFont}`
       },
       {
         headers: {
