@@ -14,6 +14,8 @@ function App() {
     "cardsLoggedInUser",
     ""
   );
+  
+  
 
   return (
     <div className="App">
@@ -35,9 +37,11 @@ function App() {
   );
 }
 
-function LogOut({ setToken }) {
+function LogOut({ setToken, setLoggedInUser }) {
   const navigate = useNavigate();
+  
   setToken(null);
+  setLoggedInUser(null);
   navigate("/");
 }
 

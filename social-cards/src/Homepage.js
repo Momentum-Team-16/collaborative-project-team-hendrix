@@ -7,7 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom"; //Route, Routes
 
 function Homepage({ loginToken, loggedInUser }) {
-
+  
   const [cards, setCards] = useState(null);
   useEffect(() => {
     axios
@@ -29,19 +29,21 @@ function Homepage({ loginToken, loggedInUser }) {
               </Link>
             )}
             {loginToken && (
-              <>
                 <Link to="/logout">
                   Logout
                 </Link>
-                <button>{loggedInUser}</button>
-              </>
             )}
           </button>
+          {loggedInUser && (
+            <button>{loggedInUser}</button>
+          )}
+          
         </header>
         
         {cards.map((card) => (
           <div className="post">
-            <p className="user-tag">{card.owner}</p>
+            {/* <p className="user-tag">{card.owner}</p> */}
+            <CardOwner owner={card.owner} loggedInUser={loggedInUser}/>
             <div className="canvas">
               <img
                 style={{
@@ -63,6 +65,15 @@ function Homepage({ loginToken, loggedInUser }) {
       </>
     )
   );
+}
+
+function CardOwner ({owner, loggedInUser}){
+  if(owner === loggedInUser || loggedInUser === null)
+    return (<div className="user-tag">{owner}</div>)
+  return (
+      <div className="user-tag">{owner} <button>Follow?</button></div>
+    ) 
+  
 }
 
 export default Homepage;
