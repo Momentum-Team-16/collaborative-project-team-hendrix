@@ -7,7 +7,7 @@ import NewPost from "./CreateCard";
 import axios from "axios";
 import { useNavigate, Link, Route, Routes } from "react-router-dom";
 
-function Homepage({ loginToken }) {
+function Homepage({ loginToken, loggedInUser }) {
   const navigate = useNavigate();
   const [cards, setCards] = useState(null);
   useEffect(() => {
@@ -46,12 +46,25 @@ function Homepage({ loginToken }) {
             {!loginToken && <Link to="/login">Login</Link>}
             {loginToken && <Link to="/logout">Logout</Link>}
           </button>
+          {loggedInUser && <button>{loggedInUser}</button>}
         </header>
-        {cards.map((card) => (
-          <Card card={card} loginToken={loginToken} />
-        ))}
+        {cards.map(
+          (card) => (
+            (<CardOwner owner={card.owner} loggedInUser={loggedInUser} />),
+            (<Card card={card} loginToken={loginToken} />)
+          )
+        )}
       </>
     )
+  );
+}
+function CardOwner({ owner, loggedInUser }) {
+  if (owner === loggedInUser || loggedInUser === null)
+    return <div className="user-tag">{owner}</div>;
+  return (
+    <div className="user-tag">
+      {owner} <button>Follow?</button>
+    </div>
   );
 }
 

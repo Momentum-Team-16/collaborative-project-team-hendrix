@@ -181,3 +181,7 @@ body,
   background-color: rgb(228, 232, 228);
   color: rgba(0, 0, 106, 0.809);
 }
+
+header {
+  display: flexbox;
+}
