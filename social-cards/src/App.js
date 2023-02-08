@@ -10,25 +10,38 @@ import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   const [loginToken, setToken] = useLocalStorageState("SocialCardsToken", "");
+  const [loggedInUser, setLoggedInUser] = useLocalStorageState(
+    "cardsLoggedInUser",
+    ""
+  );
+  
+  
 
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Homepage loginToken={loginToken} />}></Route>
+        <Route
+          path="/"
+          element={
+            <Homepage loginToken={loginToken} loggedInUser={loggedInUser} />
+          }
+        ></Route>
         <Route
           path="/new/card"
           element={<NewPost loginToken={loginToken} />}
         ></Route>
-        <Route path="/login" element={<LogIn setToken={setToken} />}></Route>
-        <Route path="/logout" element={<LogOut setToken={setToken} />}></Route>
+        <Route path="/login" element={<LogIn setToken={setToken} setLoggedInUser={setLoggedInUser}/>}></Route>
+        <Route path="/logout" element={<LogOut setToken={setToken} setLoggedInUser={setLoggedInUser}/>}></Route>
       </Routes>
     </div>
   );
 }
 
-function LogOut({ setToken }) {
+function LogOut({ setToken, setLoggedInUser }) {
   const navigate = useNavigate();
+  
   setToken(null);
+  setLoggedInUser(null);
   navigate("/");
 }
 
