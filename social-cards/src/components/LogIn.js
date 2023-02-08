@@ -1,8 +1,8 @@
-import "./App.css";
+import "../App.css";
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
-import token from "./token.json";
+import token from "../token.json";
 import he from "he";
 import { useNavigate, Link, Route, Routes } from "react-router-dom";
 

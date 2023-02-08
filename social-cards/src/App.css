@@ -26,7 +26,7 @@ body,
   align-content: center;
   display: flex;
   margin: 0 auto;
-
+  padding: 10px;
   position: relative;
   text-align: center;
   font-size: 1.2em;
@@ -144,7 +144,7 @@ body,
   margin: 1%;
 }
 
-button {
+.effect {
   text-align: center;
   height: 50px;
   width: 80px;
@@ -155,24 +155,29 @@ button {
   margin: 2px 0.5px;
 }
 
-button:hover {
+.effect:hover {
   background-color: brown;
 }
 
-.effect:hover {
-  /* text-indent: -20px; */
-  /* width: -500px;
-  height: -500px; */
-  border-top: 25px solid transparent;
-  border-left: 50px solid rgb(165, 167, 165);
-  border-bottom: 25px solid transparent;
-}
-
 .user-tag {
-  text-align: center;
+  border: 1px solid rgba(0, 0, 106, 0.809);
+  align-self: left;
   font-size: medium;
-  border-radius: 16px;
-  background-color: rgb(165, 167, 165);
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-radius: 15px;
+  background-color: rgb(228, 232, 228);
   color: rgba(0, 0, 106, 0.809);
-  margin: 2px 0.5px;
+}
+.like {
+  border: 1px solid rgba(0, 0, 106, 0.809);
+  align-self: right;
+  font-size: medium;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-radius: 15px;
+  background-color: rgb(228, 232, 228);
+  color: rgba(0, 0, 106, 0.809);
 }
