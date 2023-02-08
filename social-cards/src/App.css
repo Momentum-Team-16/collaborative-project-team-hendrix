@@ -176,3 +176,7 @@ button:hover {
   color: rgba(0, 0, 106, 0.809);
   margin: 2px 0.5px;
 }
+
+header {
+  display: flexbox;
+}

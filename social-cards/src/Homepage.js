@@ -1,12 +1,13 @@
 import "./App.css";
 import React, { useEffect } from "react";
-import LogIn from "./LogIn";
+//import LogIn from "./LogIn";
 import { useState } from "react";
-import NewPost from "./CreateCard";
+//import NewPost from "./CreateCard";
 import axios from "axios";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom"; //Route, Routes
 
-function Homepage({ loginToken }) {
+function Homepage({ loginToken, loggedInUser }) {
+
   const [cards, setCards] = useState(null);
   useEffect(() => {
     axios
@@ -14,28 +15,30 @@ function Homepage({ loginToken }) {
       .then((res) => setCards(res.data));
   }, []);
 
-  console.log(cards);
-
   return (
     cards && (
       <>
-        <button>
-          <Link to="/new/card">New Post</Link>
-        </button>
-        <button>
-          {!loginToken && (
-            <Link to="/login">
-              Log <br />
-              In
-            </Link>
-          )}
-          {loginToken && (
-            <Link to="/logout">
-              Log <br />
-              Out
-            </Link>
-          )}
-        </button>
+        <header>
+          <button>
+            <Link to="/new/card">New Post</Link>
+          </button>
+          <button>
+            {!loginToken && (
+              <Link to="/login">
+                Login
+              </Link>
+            )}
+            {loginToken && (
+              <>
+                <Link to="/logout">
+                  Logout
+                </Link>
+                <button>{loggedInUser}</button>
+              </>
+            )}
+          </button>
+        </header>
+        
         {cards.map((card) => (
           <div className="post">
             <p className="user-tag">{card.owner}</p>
