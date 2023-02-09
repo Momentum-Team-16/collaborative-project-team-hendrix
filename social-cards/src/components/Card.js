@@ -2,8 +2,9 @@ import "../App.css";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate} from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import EditCard from "./EditCard"
+
 
 function Card({ loginToken, card, loggedInUser }) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function Card({ loginToken, card, loggedInUser }) {
   const handleProfile = (owner) => {
     navigate(`/cards/${owner}/`);
   };
+
 
   const handleClick = (card) => {
     console.log(card);
@@ -34,7 +36,10 @@ function Card({ loginToken, card, loggedInUser }) {
   return (
     <div className="post">
 
-      {/* <CardOwner owner={card.owner} loggedInUser={loggedInUser} /> */}
+      {/* <CardHeader 
+        owner={card.owner} 
+        loggedInUser={loggedInUser} 
+        navigate={navigate}/> */}
 
       <button
         key={card.owner}
@@ -63,25 +68,51 @@ function Card({ loginToken, card, loggedInUser }) {
       
       <div className="response-menu">
         <button key={card.id} onClick={() => handleClick(card)} className="like">❤️ {card.likes_total + like}</button>
-        <DeleteCard owner={card.owner} cardId={card.id} loginToken={loginToken} loggedInUser={loggedInUser}/>
-        {/* <EditCard card={card}/> */}
+        <DeleteCard 
+          owner={card.owner} 
+          cardId={card.id} 
+          loginToken={loginToken} 
+          loggedInUser={loggedInUser} 
+          navigate={navigate}/>
+        <button>
+            <Link to="/edit/card">Edit</Link>
+          </button>
+        {/* <EditCard card={card} loginToken={loginToken}/>  */}
       </div>
     </div>
   );
 }
 
-function CardHeader({ owner, loggedInUser }) {
+function CardHeader({ owner, loggedInUser, navigate }) {
+  // <button
+  //       key={card.owner}
+  //       onClick={() => handleProfile}
+  //       className="user-tag"
+  //     >
+  //       {card.owner}
+  //     </button>
+
+  const handleProfile = (owner) => {
+    navigate(`/cards/${owner}/`);
+  };
+
   if (owner === loggedInUser || loggedInUser === null)
-    return <div className="user-tag">{owner}</div>;
+    return (
+      <button
+        key={owner}
+        onClick={() => handleProfile}
+        className="user-tag">
+        {owner}
+      </button>)
   return (
-    <div className="user-tag">
-      {owner} <button>Follow?</button>
+    <div>
+      <button key={owner} onClick={() => handleProfile} className="user-tag">{owner}</button>
+      <button>Follow?</button>
     </div>
   );
 }
 
-function DeleteCard ({owner, cardId, loginToken, loggedInUser }){
-  const navigate = useNavigate();
+function DeleteCard ({owner, cardId, loginToken, loggedInUser, navigate }){
   const handleDelete = () => {
     axios({
       method: 'DELETE',
