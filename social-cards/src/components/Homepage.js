@@ -21,9 +21,9 @@ function Homepage({ loginToken, loggedInUser }) {
       <>
         <header className="homepage-nav">
           <button>
-            <Link to="/new/card">New Post</Link>
+            <Link className="user-tag" to="/new/card">New Post</Link>
           </button>
-          <button>
+          <button className="user-tag">
             {!loginToken && <Link to="/login">Login</Link>}
             {loginToken && <Link to="/logout">Logout</Link>}
           </button>

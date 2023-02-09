@@ -40,19 +40,28 @@ function EditCard({ loginToken }) {
     })
       .then((res) =>{ 
         setCards(res.data);
-        setFrontText(card.front_message)
-        setCanvasImg(card.front_image)
-        setFrontTextColor(card.front_text_color)
-        setTextAlign(card.text_align)
-        setTextFont(card.text_font)
-        setBorderColor(card.border_color)
-        setBorderStyle(card.border_style)
-        setLoading(false)
+        setFrontText(res.data.front_message)
+        setCanvasImg(res.data.front_image)
+        setFrontTextColor(res.data.text_color)
+        setTextAlign(res.data.text_align)
+        setTextFont(res.data.text_font)
+        setBorderColor(res.data.border_color)
+        setBorderStyle(res.data.border_style)
+        
+        // setLoading(false)
+        // setFrontText(card.front_message)
+        // setCanvasImg(card.front_image)
+        // setFrontTextColor(card.text_color)
+        // setTextAlign(card.text_align)
+        // setTextFont(card.text_font)
+        // setBorderColor(card.border_color)
+        // setBorderStyle(card.border_style)
+        // console.log(card)
+        
         
         
     })
   },[]);
-
 
 
 
@@ -68,7 +77,8 @@ function EditCard({ loginToken }) {
   
   // card && canvasImg && borderStyle &&();
 
-  return card && (
+  return ( card && (
+    
     <div className='new-post'>
       <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
@@ -82,7 +92,8 @@ function EditCard({ loginToken }) {
           textAlign={textAlign}
           borderColor={borderColor}
           borderStyle={borderStyle}
-          cardId={card.id}
+          textFont={textFont}
+          cardID={cardID}
 
         />
       </div>
@@ -112,6 +123,7 @@ function EditCard({ loginToken }) {
         setTextFont={setTextFont}
       />
     </div>
+  )
     );
 }
 
@@ -141,33 +153,36 @@ function SaveButton({
   frontText,
   frontTextColor,
   textAlign,
-  textFont,
   borderColor,
   borderStyle,
-  cardId
+  cardID,
+  textFont
 
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
-    console.log(canvasImg);
-    console.log(frontText, frontTextColor, borderColor);
-    axios({
-      method: 'PATCH',
-      url:`https://social-cards-wg2j.onrender.com/cards/${cardId}`,
-      title: "test",
-      front_image: `${canvasImg}`,
-      front_message: `${frontText}`,
-      text_color: `${frontTextColor}`,
-      border_color: `${borderColor}`,
-      text_align: `${textAlign}`,
-      border_style: `${borderStyle}`,
-      font: `${textFont}`,
-      
-      headers: {
-          authorization: `token ${loginToken}`,
+    console.log(textFont)
+    axios.patch(
+      `https://social-cards-wg2j.onrender.com/cards/${cardID}/`,
+      {
+        title: "test",
+        front_image: `${canvasImg}`,
+        front_message: `${frontText}`,
+        text_color: `${frontTextColor}`,
+        border_color: `${borderColor}`,
+        text_align: `${textAlign}`,
+        border_style: `${borderStyle}`,
+        font: `${textFont}`,
       },
+      {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      navigate("/");
     });
-    navigate("/");
   };
   return (
     <button className="effect" onClick={handleClick}>

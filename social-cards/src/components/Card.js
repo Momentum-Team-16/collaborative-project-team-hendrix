@@ -42,7 +42,7 @@ function Card({ loginToken, card, loggedInUser }) {
 
   return (
     <div className="post">
-
+      
       <CardHeader 
         owner={card.owner} 
         loggedInUser={loggedInUser} 
@@ -68,7 +68,7 @@ function Card({ loginToken, card, loggedInUser }) {
         />
         <div
           className={card.text_align}
-          style={{ color: `${card.text_color}` }}
+          style={{ color: `${card.text_color}`, fontFamily:`${card.font}` }}
         >
           {card.front_message}
         </div>
@@ -82,7 +82,7 @@ function Card({ loginToken, card, loggedInUser }) {
           loginToken={loginToken} 
           loggedInUser={loggedInUser} 
           navigate={navigate}/>
-        <button>
+        <button className="user-tag">
             <Link to={`/edit/card/${card.id}`}>Edit</Link>
           </button>
         {/* <EditCard card={card} loginToken={loginToken}/>  */}
@@ -110,7 +110,7 @@ function CardHeader({ owner, loggedInUser, navigate }) {
   return (
     <div>
       <button key={owner} onClick={()=>{handleProfile(owner)}} className="user-tag">{owner}</button>
-      <button>Follow?</button>
+      <button className="user-tag">Follow?</button>
     </div>
   );
 }
@@ -131,11 +131,10 @@ function DeleteCard ({owner, cardId, loginToken, loggedInUser, navigate }){
   if (owner !== loggedInUser || loggedInUser === null)
     return null;
   return (
-    <button onClick={handleDelete}>
+    <button className="user-tag" onClick={handleDelete}>
       Delete
     </button>
   )
-
 }
 
 

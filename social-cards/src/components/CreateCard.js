@@ -43,6 +43,7 @@ function NewPost({ loginToken }) {
           textAlign={textAlign}
           borderColor={borderColor}
           borderStyle={borderStyle}
+          textFont={textFont}
         />
       </div>
       <ImageCanvas
