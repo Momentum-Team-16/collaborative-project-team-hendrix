@@ -4,24 +4,81 @@ import axios from "axios";
 import token from "../token.json";
 import placeholder from "../no-cover-image.png";
 import he from "he";
-import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
+import { Navigate, useNavigate, Link, Route, Routes, useParams } from "react-router-dom";
 
-function EditCard({ card, loginToken }) {
-  const [canvasImg, setCanvasImg] = useState(card.front_image);
-  const [frontText, setFrontText] = useState(card.front_message);
-  const [frontTextColor, setFrontTextColor] = useState(card.text_color);
-  const [textAlign, setTextAlign] = useState(card.text_align);
-  const [textFont, setTextFont] = useState(card.font);
+function EditCard({ loginToken }) {
+  const {cardID} = useParams();
+  console.log(cardID);
+
+  const [card, setCards] = useState(null);
+  const [isLoading, setLoading] = useState(true)
+  // const [canvasImg, setCanvasImg] = useState(card.front_image);
+  // const [frontText, setFrontText] = useState(card.front_message);
+  // const [frontTextColor, setFrontTextColor] = useState(card.text_color);
+  // const [textAlign, setTextAlign] = useState(card.text_align);
+  // const [textFont, setTextFont] = useState(card.font);
+
+  // const [bottomHalf, setBottomHalf] = useState("front_image");
+  // const [borderColor, setBorderColor] = useState(card.border_color);
+  // const [borderStyle, setBorderStyle] = useState(card.border_style);
+
+  const [canvasImg, setCanvasImg] = useState(null);
+  const [frontText, setFrontText] = useState("");
+  const [frontTextColor, setFrontTextColor] = useState(null);
+  const [textAlign, setTextAlign] = useState(null);
+  const [textFont, setTextFont] = useState(null);
 
   const [bottomHalf, setBottomHalf] = useState("front-image");
-  const [borderColor, setBorderColor] = useState(card.border_color);
-  const [borderStyle, setBorderStyle] = useState(card.border_style);
+  const [borderColor, setBorderColor] = useState(null);
+  const [borderStyle, setBorderStyle] = useState(null);
 
-  if (!loginToken) {
-    return <Navigate to="/login" />;
-  }
-  return (
+  useEffect(() => {
+    axios.get(`https://social-cards-wg2j.onrender.com/cards/${cardID}/`,{       
+      headers: {
+          authorization: `token ${loginToken}`,
+      },
+    })
+      .then((res) =>{ 
+        setCards(res.data);
+        setFrontText(res.data.front_message)
+        setCanvasImg(res.data.front_image)
+        setFrontTextColor(res.data.text_color)
+        setTextAlign(res.data.text_align)
+        setTextFont(res.data.text_font)
+        setBorderColor(res.data.border_color)
+        setBorderStyle(res.data.border_style)
+        
+        // setLoading(false)
+        // setFrontText(card.front_message)
+        // setCanvasImg(card.front_image)
+        // setFrontTextColor(card.text_color)
+        // setTextAlign(card.text_align)
+        // setTextFont(card.text_font)
+        // setBorderColor(card.border_color)
+        // setBorderStyle(card.border_style)
+        // console.log(card)
+        
+        
+        
+    })
+  },[]);
 
+
+
+  // if (!loginToken) {
+  //   return <Navigate to="/login" />;
+  // }
+
+
+  // if(isLoading){
+  //   return <div>Loading...</div>
+  // }
+
+  
+  // card && canvasImg && borderStyle &&();
+
+  return ( card && (
+    
     <div className='new-post'>
       <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
@@ -35,7 +92,8 @@ function EditCard({ card, loginToken }) {
           textAlign={textAlign}
           borderColor={borderColor}
           borderStyle={borderStyle}
-          cardId={card.id}
+          textFont={textFont}
+          cardID={cardID}
 
         />
       </div>
@@ -65,8 +123,12 @@ function EditCard({ card, loginToken }) {
         setTextFont={setTextFont}
       />
     </div>
-  );
+  )
+    );
 }
+
+
+
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
@@ -91,33 +153,36 @@ function SaveButton({
   frontText,
   frontTextColor,
   textAlign,
-  textFont,
   borderColor,
   borderStyle,
-  cardId
+  cardID,
+  textFont
 
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
-    console.log(canvasImg);
-    console.log(frontText, frontTextColor, borderColor);
-    axios({
-      method: 'PATCH',
-      url:`https://social-cards-wg2j.onrender.com/cards/${cardId}`,
-      title: "test",
-      front_image: `${canvasImg}`,
-      front_message: `${frontText}`,
-      text_color: `${frontTextColor}`,
-      border_color: `${borderColor}`,
-      text_align: `${textAlign}`,
-      border_style: `${borderStyle}`,
-      font: `${textFont}`,
-      
-      headers: {
-          authorization: `token ${loginToken}`,
+    console.log(textFont)
+    axios.patch(
+      `https://social-cards-wg2j.onrender.com/cards/${cardID}/`,
+      {
+        title: "test",
+        front_image: `${canvasImg}`,
+        front_message: `${frontText}`,
+        text_color: `${frontTextColor}`,
+        border_color: `${borderColor}`,
+        text_align: `${textAlign}`,
+        border_style: `${borderStyle}`,
+        font: `${textFont}`,
       },
+      {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      }
+    )
+    .then((res) => {
+      navigate("/");
     });
-    navigate("/");
   };
   return (
     <button className="effect" onClick={handleClick}>

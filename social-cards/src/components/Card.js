@@ -11,9 +11,9 @@ function Card({ loginToken, card, loggedInUser }) {
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleProfile = (owner) => {
-    navigate(`/cards/${owner}/`);
-  };
+  // const handleProfile = (owner) => {
+  //   navigate(`/cards/${owner}/`);
+  // };
 
 
   const handleClick = (card) => {
@@ -33,21 +33,29 @@ function Card({ loginToken, card, loggedInUser }) {
       });
   };
 
+
+  // const handleEdit = (card.id) => {
+  //   navigate()
+
+  // };
+
+
   return (
     <div className="post">
-
-      {/* <CardHeader 
+      
+      <CardHeader 
         owner={card.owner} 
         loggedInUser={loggedInUser} 
-        navigate={navigate}/> */}
-
+        navigate={navigate}/>
+        
+{/* BUTTON THAT TAKES YOU TO PROFILE
       <button
         key={card.owner}
         onClick={() => handleProfile(card.owner)}
         className="user-tag"
       >
         {card.owner}
-      </button>
+      </button> */}
       
       <div className="canvas">
         <img
@@ -60,7 +68,7 @@ function Card({ loginToken, card, loggedInUser }) {
         />
         <div
           className={card.text_align}
-          style={{ color: `${card.text_color}` }}
+          style={{ color: `${card.text_color}`, fontFamily:`${card.font}` }}
         >
           {card.front_message}
         </div>
@@ -74,8 +82,8 @@ function Card({ loginToken, card, loggedInUser }) {
           loginToken={loginToken} 
           loggedInUser={loggedInUser} 
           navigate={navigate}/>
-        <button>
-            <Link to="/edit/card">Edit</Link>
+        <button className="user-tag">
+            <Link to={`/edit/card/${card.id}`}>Edit</Link>
           </button>
         {/* <EditCard card={card} loginToken={loginToken}/>  */}
       </div>
@@ -84,15 +92,10 @@ function Card({ loginToken, card, loggedInUser }) {
 }
 
 function CardHeader({ owner, loggedInUser, navigate }) {
-  // <button
-  //       key={card.owner}
-  //       onClick={() => handleProfile}
-  //       className="user-tag"
-  //     >
-  //       {card.owner}
-  //     </button>
+  
 
   const handleProfile = (owner) => {
+    console.log(owner)
     navigate(`/cards/${owner}/`);
   };
 
@@ -100,14 +103,14 @@ function CardHeader({ owner, loggedInUser, navigate }) {
     return (
       <button
         key={owner}
-        onClick={() => handleProfile}
+        onClick={()=>{handleProfile(owner)}}
         className="user-tag">
         {owner}
       </button>)
   return (
     <div>
-      <button key={owner} onClick={() => handleProfile} className="user-tag">{owner}</button>
-      <button>Follow?</button>
+      <button key={owner} onClick={()=>{handleProfile(owner)}} className="user-tag">{owner}</button>
+      <button className="user-tag">Follow?</button>
     </div>
   );
 }
@@ -128,11 +131,10 @@ function DeleteCard ({owner, cardId, loginToken, loggedInUser, navigate }){
   if (owner !== loggedInUser || loggedInUser === null)
     return null;
   return (
-    <button onClick={handleDelete}>
+    <button className="user-tag" onClick={handleDelete}>
       Delete
     </button>
   )
-
 }
 
 

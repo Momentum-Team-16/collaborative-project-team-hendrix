@@ -48,7 +48,7 @@ function App() {
         ></Route>
 
         <Route
-          path="/edit/card"
+          path="/edit/card/:cardID/"
           element={<EditCard loginToken={loginToken}/>}
         ></Route>
 
