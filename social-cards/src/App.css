@@ -4,9 +4,6 @@ body,
 .react-root {
   height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .front-card:hover {
@@ -15,7 +12,7 @@ body,
 .App {
   align-content: center;
   align-items: center;
-  width: 75%;
+  width: 100%;
   height: 100%;
 }
 
@@ -182,10 +179,26 @@ body,
   color: rgba(0, 0, 106, 0.809);
 }
 
-header {
-  display: flexbox;
+.homepage-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
 }
 
 .post {
-  border: 2x black solid;
+  border: 2px black solid;
+  margin: 10px;
+  border-radius: 20px;
+  padding: 1em;
+}
+
+.response-menu {
+  display: flex;
+  justify-content: center;
+}
+
+.card-zone {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }

@@ -15,7 +15,7 @@ import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
 //   );
 // }
 
-function NewPost({ loginToken, setNewPost }) {
+function NewPost({ loginToken }) {
   const [canvasImg, setCanvasImg] = useState(placeholder);
   const [frontText, setFrontText] = useState("");
   const [frontTextColor, setFrontTextColor] = useState("black");
@@ -43,7 +43,6 @@ function NewPost({ loginToken, setNewPost }) {
           textAlign={textAlign}
           borderColor={borderColor}
           borderStyle={borderStyle}
-          setNewPost={setNewPost}
         />
       </div>
       <ImageCanvas
@@ -101,7 +100,6 @@ function SaveButton({
   textFont,
   borderColor,
   borderStyle,
-  setNewPost,
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {

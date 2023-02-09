@@ -19,7 +19,7 @@ function Homepage({ loginToken, loggedInUser }) {
   return (
     cards && (
       <>
-        <header>
+        <header className="homepage-nav">
           <button>
             <Link to="/new/card">New Post</Link>
           </button>
@@ -29,11 +29,13 @@ function Homepage({ loginToken, loggedInUser }) {
           </button>
           {loggedInUser && <button>{loggedInUser}</button>}
         </header>
-        {cards.map(
-          (card) => (
-            <Card card={card} loginToken={loginToken} loggedInUser={loggedInUser} />
-          )
-        )}
+        <div className="card-zone">
+          {cards.map(
+            (card) => (
+              <Card card={card} loginToken={loginToken} loggedInUser={loggedInUser} />
+            )
+          )}
+        </div>
       </>
     )
   );

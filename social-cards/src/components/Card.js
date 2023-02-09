@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate} from "react-router-dom";
+import EditCard from "./EditCard"
 
 function Card({ loginToken, card, loggedInUser }) {
   const navigate = useNavigate();
@@ -32,6 +33,9 @@ function Card({ loginToken, card, loggedInUser }) {
 
   return (
     <div className="post">
+
+      {/* <CardOwner owner={card.owner} loggedInUser={loggedInUser} /> */}
+
       <button
         key={card.owner}
         onClick={() => handleProfile(card.owner)}
@@ -56,11 +60,11 @@ function Card({ loginToken, card, loggedInUser }) {
           {card.front_message}
         </div>
       </div>
-      {/* <CardOwner owner={card.owner} loggedInUser={loggedInUser} /> */}
+      
       <div className="response-menu">
-        <button key={card.id} onClick={() => handleClick(card)} className="like">❤️ {card.likes_total + like}
-        </button>
+        <button key={card.id} onClick={() => handleClick(card)} className="like">❤️ {card.likes_total + like}</button>
         <DeleteCard owner={card.owner} cardId={card.id} loginToken={loginToken} loggedInUser={loggedInUser}/>
+        {/* <EditCard card={card}/> */}
       </div>
     </div>
   );
@@ -99,5 +103,6 @@ function DeleteCard ({owner, cardId, loginToken, loggedInUser }){
   )
 
 }
+
 
 export default Card;
