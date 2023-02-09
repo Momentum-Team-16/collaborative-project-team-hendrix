@@ -1,8 +1,8 @@
-import "./App.css";
+import "../App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import token from "./token.json";
-import placeholder from "./no-cover-image.png";
+import token from "../token.json";
+import placeholder from "../no-cover-image.png";
 import he from "he";
 import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
 
@@ -226,7 +226,7 @@ function SearchBar({ setCanvasImg }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button>Search</button>
+        <button className="effect">Search</button>
       </form>
       <div className="wrapper">
         <FrontCard
