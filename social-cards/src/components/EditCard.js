@@ -8,31 +8,67 @@ import { Navigate, useNavigate, Link, Route, Routes, useParams } from "react-rou
 
 function EditCard({ loginToken }) {
   const {cardID} = useParams();
-  const [card, setCards] = useState(null);
+  console.log(cardID);
 
-  const [canvasImg, setCanvasImg] = useState(card.front_image);
-  const [frontText, setFrontText] = useState(card.front_message);
-  const [frontTextColor, setFrontTextColor] = useState(card.text_color);
-  const [textAlign, setTextAlign] = useState(card.text_align);
-  const [textFont, setTextFont] = useState(card.font);
+  const [card, setCards] = useState(null);
+  const [isLoading, setLoading] = useState(true)
+  // const [canvasImg, setCanvasImg] = useState(card.front_image);
+  // const [frontText, setFrontText] = useState(card.front_message);
+  // const [frontTextColor, setFrontTextColor] = useState(card.text_color);
+  // const [textAlign, setTextAlign] = useState(card.text_align);
+  // const [textFont, setTextFont] = useState(card.font);
+
+  // const [bottomHalf, setBottomHalf] = useState("front_image");
+  // const [borderColor, setBorderColor] = useState(card.border_color);
+  // const [borderStyle, setBorderStyle] = useState(card.border_style);
+
+  const [canvasImg, setCanvasImg] = useState(null);
+  const [frontText, setFrontText] = useState("");
+  const [frontTextColor, setFrontTextColor] = useState(null);
+  const [textAlign, setTextAlign] = useState(null);
+  const [textFont, setTextFont] = useState(null);
 
   const [bottomHalf, setBottomHalf] = useState("front-image");
-  const [borderColor, setBorderColor] = useState(card.border_color);
-  const [borderStyle, setBorderStyle] = useState(card.border_style);
+  const [borderColor, setBorderColor] = useState(null);
+  const [borderStyle, setBorderStyle] = useState(null);
+
+  useEffect(() => {
+    axios.get(`https://social-cards-wg2j.onrender.com/cards/${cardID}/`,{       
+      headers: {
+          authorization: `token ${loginToken}`,
+      },
+    })
+      .then((res) =>{ 
+        setCards(res.data);
+        setFrontText(card.front_message)
+        setCanvasImg(card.front_image)
+        setFrontTextColor(card.front_text_color)
+        setTextAlign(card.text_align)
+        setTextFont(card.text_font)
+        setBorderColor(card.border_color)
+        setBorderStyle(card.border_style)
+        setLoading(false)
+        
+        
+    })
+  },[]);
+
+
+
 
   // if (!loginToken) {
   //   return <Navigate to="/login" />;
   // }
-useEffect(()=>{
-  axios
-      .get(`https://social-cards-wg2j.onrender.com/cards/${cardID}`)
-      .then((res) => setCards(res.data));
-  }, [cardID]);
 
 
+  // if(isLoading){
+  //   return <div>Loading...</div>
+  // }
 
-  return (
+  
+  // card && canvasImg && borderStyle &&();
 
+  return card && (
     <div className='new-post'>
       <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
@@ -76,8 +112,11 @@ useEffect(()=>{
         setTextFont={setTextFont}
       />
     </div>
-  );
+    );
 }
+
+
+
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (

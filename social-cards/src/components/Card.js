@@ -83,7 +83,7 @@ function Card({ loginToken, card, loggedInUser }) {
           loggedInUser={loggedInUser} 
           navigate={navigate}/>
         <button>
-            <Link to="/edit/card">Edit</Link>
+            <Link to={`/edit/card/${card.id}`}>Edit</Link>
           </button>
         {/* <EditCard card={card} loginToken={loginToken}/>  */}
       </div>
