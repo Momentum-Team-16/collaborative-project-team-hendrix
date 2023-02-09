@@ -185,3 +185,7 @@ body,
 header {
   display: flexbox;
 }
+
+.post {
+  border: 2x black solid;
+}

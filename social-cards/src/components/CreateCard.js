@@ -105,8 +105,6 @@ function SaveButton({
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
-    console.log(canvasImg);
-    console.log(frontText, frontTextColor, borderColor);
     axios
       .post(
         "https://social-cards-wg2j.onrender.com/cards/me/",

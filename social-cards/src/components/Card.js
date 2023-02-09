@@ -1,18 +1,16 @@
 import "../App.css";
 import React, { useEffect } from "react";
-import LogIn from "./LogIn";
 import { useState } from "react";
-import NewPost from "./CreateCard";
 import axios from "axios";
-import { useNavigate, Link, Route, Routes } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
-function Card({ loginToken, card }) {
+function Card({ loginToken, card, loggedInUser }) {
   const navigate = useNavigate();
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleProfile = (card) => {
-    navigate(`/cards/${card.owner}`);
+  const handleProfile = (owner) => {
+    navigate(`/cards/${owner}/`);
   };
 
   const handleClick = (card) => {
@@ -36,14 +34,12 @@ function Card({ loginToken, card }) {
     <div className="post">
       <button
         key={card.owner}
-        onClick={() => handleProfile}
+        onClick={() => handleProfile(card.owner)}
         className="user-tag"
       >
         {card.owner}
       </button>
-      <button key={card.id} onClick={() => handleClick(card)} className="like">
-        💔 {card.likes_total + like}
-      </button>
+      
       <div className="canvas">
         <img
           style={{
@@ -60,8 +56,48 @@ function Card({ loginToken, card }) {
           {card.front_message}
         </div>
       </div>
+      {/* <CardOwner owner={card.owner} loggedInUser={loggedInUser} /> */}
+      <div className="response-menu">
+        <button key={card.id} onClick={() => handleClick(card)} className="like">❤️ {card.likes_total + like}
+        </button>
+        <DeleteCard owner={card.owner} cardId={card.id} loginToken={loginToken} loggedInUser={loggedInUser}/>
+      </div>
     </div>
   );
+}
+
+function CardHeader({ owner, loggedInUser }) {
+  if (owner === loggedInUser || loggedInUser === null)
+    return <div className="user-tag">{owner}</div>;
+  return (
+    <div className="user-tag">
+      {owner} <button>Follow?</button>
+    </div>
+  );
+}
+
+function DeleteCard ({owner, cardId, loginToken, loggedInUser }){
+  const navigate = useNavigate();
+  const handleDelete = () => {
+    axios({
+      method: 'DELETE',
+      url: `https://social-cards-wg2j.onrender.com/cards/${cardId}/`,       
+      headers: {
+          authorization: `token ${loginToken}`,
+      },
+    }).then((res) => {
+        navigate("/");
+      });
+  };
+
+  if (owner !== loggedInUser || loggedInUser === null)
+    return null;
+  return (
+    <button onClick={handleDelete}>
+      Delete
+    </button>
+  )
+
 }
 
 export default Card;

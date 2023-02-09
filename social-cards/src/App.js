@@ -1,11 +1,11 @@
 import "./App.css";
 import React, { useEffect } from "react";
 import LogIn from "./components/LogIn";
-import { useState } from "react";
+//import { useState } from "react";
 import NewPost from "./components/CreateCard";
 import Homepage from "./components/Homepage";
-import axios from "axios";
-import { useNavigate, Link, Route, Routes, useParams } from "react-router-dom";
+//import axios from "axios";
+import { useNavigate, Route, Routes, useParams } from "react-router-dom";
 import useLocalStorageState from "use-local-storage-state";
 
 function App() {
