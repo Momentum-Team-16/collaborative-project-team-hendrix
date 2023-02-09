@@ -2,9 +2,8 @@ import "../App.css";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link} from "react-router-dom";
-import EditCard from "./EditCard"
-
+import { useNavigate, Link } from "react-router-dom";
+import EditCard from "./EditCard";
 
 function Card({ loginToken, card, loggedInUser }) {
   const navigate = useNavigate();
@@ -14,7 +13,6 @@ function Card({ loginToken, card, loggedInUser }) {
   // const handleProfile = (owner) => {
   //   navigate(`/cards/${owner}/`);
   // };
-
 
   const handleClick = (card) => {
     console.log(card);
@@ -33,22 +31,20 @@ function Card({ loginToken, card, loggedInUser }) {
       });
   };
 
-
   // const handleEdit = (card.id) => {
   //   navigate()
 
   // };
 
-
   return (
     <div className="post">
-      
-      <CardHeader 
-        owner={card.owner} 
-        loggedInUser={loggedInUser} 
-        navigate={navigate}/>
-        
-{/* BUTTON THAT TAKES YOU TO PROFILE
+      <CardHeader
+        owner={card.owner}
+        loggedInUser={loggedInUser}
+        navigate={navigate}
+      />
+
+      {/* BUTTON THAT TAKES YOU TO PROFILE
       <button
         key={card.owner}
         onClick={() => handleProfile(card.owner)}
@@ -56,7 +52,7 @@ function Card({ loginToken, card, loggedInUser }) {
       >
         {card.owner}
       </button> */}
-      
+
       <div className="canvas">
         <img
           style={{
@@ -68,23 +64,34 @@ function Card({ loginToken, card, loggedInUser }) {
         />
         <div
           className={card.text_align}
-          style={{ color: `${card.text_color}`, fontFamily:`${card.font}` }}
+          style={{ color: `${card.text_color}`, fontFamily: `${card.font}` }}
         >
           {card.front_message}
         </div>
       </div>
-      
+
       <div className="response-menu">
-        <button key={card.id} onClick={() => handleClick(card)} className="like">❤️ {card.likes_total + like}</button>
-        <DeleteCard 
-          owner={card.owner} 
-          cardId={card.id} 
-          loginToken={loginToken} 
-          loggedInUser={loggedInUser} 
-          navigate={navigate}/>
-        <button className="user-tag">
-            <Link to={`/edit/card/${card.id}`}>Edit</Link>
+        <button
+          key={card.id}
+          onClick={() => handleClick(card)}
+          className="like"
+        >
+          ❤️ {card.likes_total + like}
+        </button>
+        <DeleteCard
+          owner={card.owner}
+          cardId={card.id}
+          loginToken={loginToken}
+          loggedInUser={loggedInUser}
+          navigate={navigate}
+        />
+        {card.owner === loggedInUser && (
+          <button>
+            <Link className="user-tag" to={`/edit/card/${card.id}`}>
+              Edit
+            </Link>
           </button>
+        )}
         {/* <EditCard card={card} loginToken={loginToken}/>  */}
       </div>
     </div>
@@ -92,10 +99,8 @@ function Card({ loginToken, card, loggedInUser }) {
 }
 
 function CardHeader({ owner, loggedInUser, navigate }) {
-  
-
   const handleProfile = (owner) => {
-    console.log(owner)
+    console.log(owner);
     navigate(`/cards/${owner}/`);
   };
 
@@ -103,39 +108,49 @@ function CardHeader({ owner, loggedInUser, navigate }) {
     return (
       <button
         key={owner}
-        onClick={()=>{handleProfile(owner)}}
-        className="user-tag">
+        onClick={() => {
+          handleProfile(owner);
+        }}
+        className="user-tag"
+      >
         {owner}
-      </button>)
+      </button>
+    );
   return (
     <div>
-      <button key={owner} onClick={()=>{handleProfile(owner)}} className="user-tag">{owner}</button>
-      <button className="user-tag">Follow?</button>
+      <button
+        key={owner}
+        onClick={() => {
+          handleProfile(owner);
+        }}
+        className="user-tag"
+      >
+        {owner}
+      </button>
+      <button className="user-tag">follow?</button>
     </div>
   );
 }
 
-function DeleteCard ({owner, cardId, loginToken, loggedInUser, navigate }){
+function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
   const handleDelete = () => {
     axios({
-      method: 'DELETE',
-      url: `https://social-cards-wg2j.onrender.com/cards/${cardId}/`,       
+      method: "DELETE",
+      url: `https://social-cards-wg2j.onrender.com/cards/${cardId}/`,
       headers: {
-          authorization: `token ${loginToken}`,
+        authorization: `token ${loginToken}`,
       },
     }).then((res) => {
-        navigate("/");
-      });
+      navigate("/");
+    });
   };
 
-  if (owner !== loggedInUser || loggedInUser === null)
-    return null;
+  if (owner !== loggedInUser || loggedInUser === null) return null;
   return (
     <button className="user-tag" onClick={handleDelete}>
-      Delete
+      delete
     </button>
-  )
+  );
 }
-
 
 export default Card;
