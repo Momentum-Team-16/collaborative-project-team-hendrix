@@ -4,9 +4,12 @@ import axios from "axios";
 import token from "../token.json";
 import placeholder from "../no-cover-image.png";
 import he from "he";
-import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
+import { Navigate, useNavigate, Link, Route, Routes, useParams } from "react-router-dom";
 
-function EditCard({ card, loginToken }) {
+function EditCard({ loginToken }) {
+  const {cardID} = useParams();
+  const [card, setCards] = useState(null);
+
   const [canvasImg, setCanvasImg] = useState(card.front_image);
   const [frontText, setFrontText] = useState(card.front_message);
   const [frontTextColor, setFrontTextColor] = useState(card.text_color);
@@ -17,9 +20,17 @@ function EditCard({ card, loginToken }) {
   const [borderColor, setBorderColor] = useState(card.border_color);
   const [borderStyle, setBorderStyle] = useState(card.border_style);
 
-  if (!loginToken) {
-    return <Navigate to="/login" />;
-  }
+  // if (!loginToken) {
+  //   return <Navigate to="/login" />;
+  // }
+useEffect(()=>{
+  axios
+      .get(`https://social-cards-wg2j.onrender.com/cards/${cardID}`)
+      .then((res) => setCards(res.data));
+  }, [cardID]);
+
+
+
   return (
 
     <div className='new-post'>
