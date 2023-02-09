@@ -86,9 +86,9 @@ function Card({ loginToken, card, loggedInUser }) {
           navigate={navigate}
         />
         {card.owner === loggedInUser && (
-          <button>
-            <Link className="user-tag" to={`/edit/card/${card.id}`}>
-              Edit
+          <button className="user-tag">
+            <Link className="links" to={`/edit/card/${card.id}`}>
+              edit
             </Link>
           </button>
         )}
@@ -127,7 +127,7 @@ function CardHeader({ owner, loggedInUser, navigate }) {
       >
         {owner}
       </button>
-      <button className="user-tag">follow?</button>
+      <button className="user-tag">¿follow?</button>
     </div>
   );
 }

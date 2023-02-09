@@ -20,26 +20,39 @@ function Homepage({ loginToken, loggedInUser }) {
     cards && (
       <>
         <header className="homepage-nav">
-          <button>
-            <Link className="user-tag" to="/new/card">New Post</Link>
+          <button className="user-tag">
+            <Link className="links" to="/new/card">
+              New Post
+            </Link>
           </button>
           <button className="user-tag">
-            {!loginToken && <Link to="/login">Login</Link>}
-            {loginToken && <Link to="/logout">Logout</Link>}
+            {!loginToken && (
+              <Link className="links" to="/login">
+                Login
+              </Link>
+            )}
+            {loginToken && (
+              <Link className="links" to="/logout">
+                Logout
+              </Link>
+            )}
           </button>
-          {loggedInUser && <button>{loggedInUser}</button>}
+          {loggedInUser && (
+            <a className="user-tag"> ¡Welcome! {loggedInUser}</a>
+          )}
         </header>
         <div className="card-zone">
-          {cards.map(
-            (card) => (
-              <Card card={card} loginToken={loginToken} loggedInUser={loggedInUser} />
-            )
-          )}
+          {cards.map((card) => (
+            <Card
+              card={card}
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+            />
+          ))}
         </div>
       </>
     )
   );
 }
-
 
 export default Homepage;
