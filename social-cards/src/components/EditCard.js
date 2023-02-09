@@ -1,21 +1,21 @@
-import "./App.css";
+import "../App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import token from "./token.json";
-import placeholder from "./no-cover-image.png";
+import token from "../token.json";
+import placeholder from "../no-cover-image.png";
 import he from "he";
 import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
 
-function NewPost({ loginToken, setNewPost }) {
-  const [canvasImg, setCanvasImg] = useState(placeholder);
-  const [frontText, setFrontText] = useState("");
-  const [frontTextColor, setFrontTextColor] = useState("black");
-  const [textAlign, setTextAlign] = useState("center");
-  const [textFont, setTextFont] = useState("sans-serif");
+function EditCard({ card, loginToken }) {
+  const [canvasImg, setCanvasImg] = useState(card.front_image);
+  const [frontText, setFrontText] = useState(card.front_message);
+  const [frontTextColor, setFrontTextColor] = useState(card.text_color);
+  const [textAlign, setTextAlign] = useState(card.text_align);
+  const [textFont, setTextFont] = useState(card.font);
 
   const [bottomHalf, setBottomHalf] = useState("front-image");
-  const [borderColor, setBorderColor] = useState("black");
-  const [borderStyle, setBorderStyle] = useState("none");
+  const [borderColor, setBorderColor] = useState(card.border_color);
+  const [borderStyle, setBorderStyle] = useState(card.border_style);
 
   if (!loginToken) {
     return <Navigate to="/login" />;
@@ -35,7 +35,7 @@ function NewPost({ loginToken, setNewPost }) {
           textAlign={textAlign}
           borderColor={borderColor}
           borderStyle={borderStyle}
-          setNewPost={setNewPost}
+          cardId={card.id}
 
         />
       </div>
@@ -94,31 +94,29 @@ function SaveButton({
   textFont,
   borderColor,
   borderStyle,
-  setNewPost,
+  cardId
 
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
     console.log(canvasImg);
     console.log(frontText, frontTextColor, borderColor);
-    axios.post(
-      "https://social-cards-wg2j.onrender.com/cards/me/",
-      {
-        title: "test",
-        front_image: `${canvasImg}`,
-        front_message: `${frontText}`,
-        text_color: `${frontTextColor}`,
-        border_color: `${borderColor}`,
-        text_align: `${textAlign}`,
-        border_style: `${borderStyle}`,
-        font: `${textFont}`
-      },
-      {
-        headers: {
+    axios({
+      method: 'PATCH',
+      url:`https://social-cards-wg2j.onrender.com/cards/${cardId}`,
+      title: "test",
+      front_image: `${canvasImg}`,
+      front_message: `${frontText}`,
+      text_color: `${frontTextColor}`,
+      border_color: `${borderColor}`,
+      text_align: `${textAlign}`,
+      border_style: `${borderStyle}`,
+      font: `${textFont}`,
+      
+      headers: {
           authorization: `token ${loginToken}`,
-        },
-      }
-    );
+      },
+    });
     navigate("/");
   };
   return (
@@ -377,4 +375,4 @@ function BorderSelect(props) {
   );
 }
 
-export default NewPost;
+export default EditCard;
