@@ -12,10 +12,36 @@ import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   const [loginToken, setToken] = useLocalStorageState("SocialCardsToken", "");
+  const [follow, setFollow] = useState(false);
   const [loggedInUser, setLoggedInUser] = useLocalStorageState(
     "cardsLoggedInUser",
     ""
   );
+
+  useEffect(() => {
+    axios
+      .get(`https://social-cards-wg2j.onrender.com/users/`, {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      })
+      .then((res) => {
+        let followers = [];
+        console.log(res.data[0]);
+        res.data[0].followed_list.map((followed) => {
+          followers.push(followed.followed);
+        });
+        console.log(followers);
+        setFollow(followers);
+        // console.log(res.data);
+        // console.log("filtering for users");
+        // const filterValue = owner;
+        // const filteredUsers = user.filter((val) =>
+        //   val.areas.includes(filterValue)
+        // );
+        // console.log(filteredUsers);
+      });
+  }, [loginToken]);
 
   return (
     <div className="App">
@@ -23,7 +49,11 @@ function App() {
         <Route
           path="/"
           element={
-            <Homepage loginToken={loginToken} loggedInUser={loggedInUser} />
+            <Homepage
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+              follow={follow}
+            />
           }
         ></Route>
         <Route
@@ -44,16 +74,39 @@ function App() {
         ></Route>
         <Route
           path="/cards/:username"
-          element={<User loginToken={loginToken} loggedInUser={loggedInUser}/>}
+          element={<User loginToken={loginToken} loggedInUser={loggedInUser} />}
+        ></Route>
+        <Route
+          path="/cards/:username/followed"
+          element={
+            <FollowedList
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+              follow={follow}
+            />
+          }
         ></Route>
 
         <Route
           path="/edit/card/:cardID/"
-          element={<EditCard loginToken={loginToken}/>}
+          element={<EditCard loginToken={loginToken} />}
         ></Route>
-
       </Routes>
     </div>
+  );
+}
+
+function FollowedList({ loginToken, loggedInUser, follow }) {
+  const { username } = useParams();
+  return (
+    <>
+      <p>{username} is following:</p>
+      <ul>
+        {follow.map((f) => (
+          <li>{f}</li>
+        ))}
+      </ul>
+    </>
   );
 }
 
@@ -81,18 +134,21 @@ function User({ loginToken, loggedInUser }) {
           </button>
           {loggedInUser && <button>{loggedInUser}</button>}
         </header>
+        <button className="user-tag">
+          <Link to={`/cards/${username}/followed`}>followers</Link>
+        </button>
         <div className="card-zone">
-          {cards.map(
-            (card) => (
-              <Card card={card} loginToken={loginToken} loggedInUser={loggedInUser} />
-            )
-          )}
+          {cards.map((card) => (
+            <Card
+              card={card}
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+            />
+          ))}
         </div>
       </>
     )
   );
-
-
 }
 
 function LogOut({ setToken, setLoggedInUser }) {

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import EditCard from "./EditCard";
 
-function Card({ loginToken, card, loggedInUser }) {
+function Card({ loginToken, card, loggedInUser, follow }) {
   const navigate = useNavigate();
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
@@ -39,8 +39,10 @@ function Card({ loginToken, card, loggedInUser }) {
   return (
     <div className="post">
       <CardHeader
+        follow={follow}
         owner={card.owner}
         loggedInUser={loggedInUser}
+        loginToken={loginToken}
         navigate={navigate}
       />
 
@@ -98,7 +100,7 @@ function Card({ loginToken, card, loggedInUser }) {
   );
 }
 
-function CardHeader({ owner, loggedInUser, navigate }) {
+function CardHeader({ owner, loggedInUser, navigate, loginToken, follow }) {
   const handleProfile = (owner) => {
     console.log(owner);
     navigate(`/cards/${owner}/`);
@@ -127,7 +129,7 @@ function CardHeader({ owner, loggedInUser, navigate }) {
       >
         {owner}
       </button>
-      <button className="user-tag">¿follow?</button>
+      <Follow follow={follow} loginToken={loginToken} owner={owner} />
     </div>
   );
 }
@@ -150,6 +152,49 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
     <button className="user-tag" onClick={handleDelete}>
       delete
     </button>
+  );
+}
+
+function Follow({ owner, loginToken, follow }) {
+  const [user, setUser] = useState(null);
+  const handleFollow = (owner, loginToken) => {
+    // follow &&
+    //   follow.map((f) => {
+    //     setUser(f.followed_list);
+    //   });
+    // user && user.map((l) => console.log(l));
+    console.log(owner, loginToken);
+    axios
+      .post(
+        `https://social-cards-wg2j.onrender.com/follower/${owner}`,
+        {},
+        {
+          headers: {
+            authorization: `token ${loginToken}`,
+          },
+        }
+      )
+      .then((res) => console.log("followed"));
+  };
+
+  return (
+    <>
+      {follow.includes(owner) ? (
+        <button
+          className="user-tag"
+          onClick={() => handleFollow(owner, loginToken)}
+        >
+          ¿follow?
+        </button>
+      ) : (
+        <button
+          className="user-tag"
+          onClick={() => handleFollow(owner, loginToken)}
+        >
+          ¿unfollow 🥹?
+        </button>
+      )}
+    </>
   );
 }
 
