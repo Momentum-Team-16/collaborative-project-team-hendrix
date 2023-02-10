@@ -128,6 +128,7 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
       },
     }).then((res) => {
       navigate("/");
+      (window.location.reload())
     });
   };
 
@@ -142,8 +143,9 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
 function FollowButton({ owner, loginToken, follow }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  //const [isFollowingButton, setFollowingButton]
-  //const
+  // const [isFollowingButton, setFollowingButton] = useState("unfollow 🥹")
+  // const [isNotFollowingButton, setNotFollowingButton] = useState("follow 🤩")
+  
 
   const handleUnfollow = (owner, loginToken) => {
     axios
@@ -171,6 +173,32 @@ function FollowButton({ owner, loginToken, follow }) {
       )
       .then((res) => console.log("followed"));
   };
+  // setFollowingButton("follow 🤩")
+  // setFollowingButton("unfollow 😭")
+
+  // if(follow.includes(owner)){
+  //   return(
+  //     <>
+  //        <button
+  //           className='user-tag'
+  //           onClick={() => handleUnfollow(owner, loginToken)}
+  //        >
+  //             {isFollowingButton}
+  //        </button>
+  //     </>
+  //   );
+  // } else{
+    
+  //   return (
+  //        <button
+  //         className='user-tag'
+  //         onClick={() => handleFollow(owner, loginToken)}
+  //       >
+  //         {isNotFollowingButton}
+  //       </button>   
+  // );}
+
+
 
   return (
     <>
@@ -179,14 +207,14 @@ function FollowButton({ owner, loginToken, follow }) {
           className='user-tag'
           onClick={() => handleUnfollow(owner, loginToken)}
         >
-          ¿unfollow 🥹?
+          unfollow 😭
         </button>
       ) : (
         <button
           className='user-tag'
           onClick={() => handleFollow(owner, loginToken)}
         >
-          ¿follow 🤩?
+          follow 🤩
         </button>
       )}
     </>

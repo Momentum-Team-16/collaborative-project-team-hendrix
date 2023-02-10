@@ -112,7 +112,7 @@ body,
 
 .navbar {
   width: 100%;
-  padding: 2%;
+  padding: 10px;
   justify-content: center;
   display: flex;
 }
@@ -146,11 +146,11 @@ body,
 .effect {
   text-align: center;
   height: 50px;
-  width: 80px;
+  width: 4%;
   font-size: medium;
-  border-radius: 16px;
-  background-color: rgb(165, 167, 165);
-  color: rgba(0, 0, 106, 0.809);
+  border-radius: 3px;
+  /* background-color: rgb(165, 167, 165);
+  color: rgba(0, 0, 106, 0.809); */
   margin: 2px 0.5px;
 }
 
@@ -170,6 +170,13 @@ body,
   color: rgba(0, 0, 106, 0.809);
 }
 
+.user-tag:hover,
+.links:hover,
+.like:hover {
+  background-color: cornflowerblue;
+  color: white;
+}
+
 .links {
   align-self: left;
   font-size: medium;
@@ -177,7 +184,7 @@ body,
   padding-right: 8px;
   padding-bottom: 2px;
   border-radius: 15px;
-  background-color: rgb(228, 232, 228);
+  /* background-color: rgb(228, 232, 228); */
   color: rgba(0, 0, 106, 0.809);
   text-decoration: none;
 }
@@ -221,6 +228,12 @@ body,
 .banner {
   background-color: rgba(0, 0, 106, 0.809);
   color: white;
+  margin-top: 0;
+  height: 5%;
+}
+
+h1 {
+  padding: 1em;
 }
 
 .login-wrapper {

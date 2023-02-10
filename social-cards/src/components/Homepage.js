@@ -18,7 +18,7 @@ function Homepage({ loginToken, loggedInUser, follow }) {
   return (
     cards && (
       <>
-        {loginToken && <h2 className='banner'>¡Welcome! {loggedInUser}</h2>}
+        {loginToken && <h1 className='banner'>¡Welcome! {loggedInUser}</h1>}
         <header className='homepage-nav'>
           <button className='user-tag'>
             <Link className='links' to='/'>

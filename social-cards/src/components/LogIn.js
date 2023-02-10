@@ -29,7 +29,7 @@ export function LogIn({ setToken, setLoggedInUser }) {
   return (
     <div className='login-wrappe'>
       {error && <p>{error.message}</p>}
-      <h2>Login</h2>
+      <h1 className="banner">Login</h1>
       <form onSubmit={handleSubmit} className='login-field'>
         <label htmlFor='username'>Username</label>
         <input
@@ -74,7 +74,7 @@ export function Register() {
   return (
     <div className='login'>
       {error && <p>{error.message}</p>}
-      <h2>Register</h2>
+      <h1 className="banner">Register</h1>
       <form onSubmit={handleSubmit} className='login-field'>
         <label htmlFor='username'>Username</label>
         <input
