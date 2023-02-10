@@ -7,7 +7,7 @@ import EditCard from "./EditCard";
 
 function Card({ loginToken, card, loggedInUser, follow }) {
   const navigate = useNavigate();
-  const [like, setLike] = useState(0);
+  const [like, setLike] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
   const handleClick = (card) => {
@@ -24,7 +24,7 @@ function Card({ loginToken, card, loggedInUser, follow }) {
       })
       // need to come back to this and make sure likes show on render
       .then((res) => {
-        setLike(1);
+        setLike(!like);
         setIsLiked(!isLiked);
         console.log("liked");
       });
@@ -142,6 +142,9 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
 function FollowButton({ owner, loginToken, follow }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  //const [isFollowingButton, setFollowingButton]
+  //const
+
   const handleUnfollow = (owner, loginToken) => {
     axios
       .delete(`https://social-cards-wg2j.onrender.com/unfollow/${owner}/`, {

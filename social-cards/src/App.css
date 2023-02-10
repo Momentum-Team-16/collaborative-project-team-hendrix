@@ -219,5 +219,17 @@ body,
 }
 
 .banner {
-  color: rgba(0, 0, 106, 0.809);
+  background-color: rgba(0, 0, 106, 0.809);
+  color: white;
 }
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+/* button:hover {
+  color: darkslategray;
+} */

@@ -23,6 +23,9 @@ function NewPost({ loginToken }) {
   return (
     <div className='new-post'>
       <div className='navbar'>
+        <button className='effect'>
+          <Link to='/'>Home</Link>
+        </button>
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
         <AddTextButton setBottomHalf={setBottomHalf} />

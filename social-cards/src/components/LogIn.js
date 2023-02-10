@@ -6,7 +6,7 @@ import token from "../token.json";
 import he from "he";
 import { useNavigate, Link, Route, Routes } from "react-router-dom";
 
-function LogIn({ setToken, setLoggedInUser }) {
+export function LogIn({ setToken, setLoggedInUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -27,26 +27,70 @@ function LogIn({ setToken, setLoggedInUser }) {
       .catch((e) => setError(e));
   };
   return (
-    <div className="login">
+    <div className='login-wrappe'>
       {error && <p>{error.message}</p>}
-      <form onSubmit={handleSubmit} className="login-field">
-        <label htmlFor="username">Username</label>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit} className='login-field'>
+        <label htmlFor='username'>Username</label>
         <input
-          type="text"
+          type='text'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-
-        <label htmlFor="password">Password</label>
+        <label htmlFor='password'>Password</label>
         <input
-          type="password"
+          type='password'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <button>Log In</button>
       </form>
+      <div>
+        <br />
+        <Link to='/register'>Create Account</Link>
+      </div>
     </div>
   );
 }
 
-export default LogIn;
+export function Register() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://social-cards-wg2j.onrender.com/auth/users/", {
+        username: `${username}`,
+        password: `${password}`,
+      })
+      .then((res) => {
+        navigate(-1);
+      })
+      .catch((e) => setError(e));
+  };
+
+  return (
+    <div className='login'>
+      {error && <p>{error.message}</p>}
+      <h2>Register</h2>
+      <form onSubmit={handleSubmit} className='login-field'>
+        <label htmlFor='username'>Username</label>
+        <input
+          type='text'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <label htmlFor='password'>Password</label>
+        <input
+          type='password'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button>Register Account</button>
+      </form>
+    </div>
+  );
+}
