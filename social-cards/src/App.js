@@ -74,7 +74,13 @@ function App() {
         ></Route>
         <Route
           path="/cards/:username"
-          element={<User follow={follow}loginToken={loginToken} loggedInUser={loggedInUser} />}
+          element={
+            <User
+              follow={follow}
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+            />
+          }
         ></Route>
         <Route
           path="/cards/:username/followed"
@@ -91,8 +97,51 @@ function App() {
           path="/edit/card/:cardID/"
           element={<EditCard loginToken={loginToken} />}
         ></Route>
+        <Route
+          path="/following"
+          element={
+            <Following
+              follow={follow}
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+            />
+          }
+        ></Route>
       </Routes>
     </div>
+  );
+}
+
+function Following({ loginToken, loggedInUser, follow }) {
+  const [cards, setCards] = useState(null);
+  useEffect(() => {
+    axios
+      .get("https://social-cards-wg2j.onrender.com/cards/followed/", {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      })
+      .then((res) => {
+        setCards(res.data);
+      });
+  }, [loginToken]);
+
+  return (
+    cards && (
+      <div>
+        <h2>Following:</h2>
+        <div className="card-zone">
+          {cards.map((card) => (
+            <Card
+              follow={follow}
+              card={card}
+              loginToken={loginToken}
+              loggedInUser={loggedInUser}
+            />
+          ))}
+        </div>
+      </div>
+    )
   );
 }
 
@@ -135,7 +184,9 @@ function User({ loginToken, loggedInUser, follow }) {
           {loggedInUser && <button>{loggedInUser}</button>}
         </header>
         <button className="user-tag">
-          <Link to={`/cards/${username}/followed`} className="links">following</Link>
+          <Link to={`/cards/${username}/followed`} className="links">
+            following
+          </Link>
         </button>
         <div className="card-zone">
           {cards.map((card) => (
