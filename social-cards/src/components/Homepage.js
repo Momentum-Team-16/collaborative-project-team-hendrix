@@ -66,7 +66,7 @@ function Homepage({ loginToken, loggedInUser, follow }) {
             )}
           </button>
           {loggedInUser && (
-            <a className="user-tag"> ¡Welcome! {loggedInUser}</a>
+            <button className="user-tag"> ¡Welcome! {loggedInUser}</button>
           )}
         </header>
         <div className="card-zone">

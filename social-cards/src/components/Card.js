@@ -129,7 +129,7 @@ function CardHeader({ owner, loggedInUser, navigate, loginToken, follow }) {
       >
         {owner}
       </button>
-      <Follow follow={follow} loginToken={loginToken} owner={owner} />
+      <FollowButton follow={follow} loginToken={loginToken} owner={owner} />
     </div>
   );
 }
@@ -155,7 +155,7 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
   );
 }
 
-function Follow({ owner, loginToken, follow }) {
+function FollowButton({ owner, loginToken, follow }) {
   const [user, setUser] = useState(null);
   const handleFollow = (owner, loginToken) => {
     // follow &&
@@ -177,6 +177,7 @@ function Follow({ owner, loginToken, follow }) {
       .then((res) => console.log("followed"));
   };
 
+  console.log(follow)
   return (
     <>
       {follow.includes(owner) ? (
