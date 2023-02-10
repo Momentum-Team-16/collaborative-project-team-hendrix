@@ -4,24 +4,21 @@ import axios from "axios";
 import token from "../token.json";
 import placeholder from "../no-cover-image.png";
 import he from "he";
-import { Navigate, useNavigate, Link, Route, Routes, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  Link,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 
 function EditCard({ loginToken }) {
-  const {cardID} = useParams();
+  const { cardID } = useParams();
   console.log(cardID);
 
   const [card, setCards] = useState(null);
-  const [isLoading, setLoading] = useState(true)
-  // const [canvasImg, setCanvasImg] = useState(card.front_image);
-  // const [frontText, setFrontText] = useState(card.front_message);
-  // const [frontTextColor, setFrontTextColor] = useState(card.text_color);
-  // const [textAlign, setTextAlign] = useState(card.text_align);
-  // const [textFont, setTextFont] = useState(card.font);
-
-  // const [bottomHalf, setBottomHalf] = useState("front_image");
-  // const [borderColor, setBorderColor] = useState(card.border_color);
-  // const [borderStyle, setBorderStyle] = useState(card.border_style);
-
+  const [isLoading, setLoading] = useState(true);
   const [canvasImg, setCanvasImg] = useState(null);
   const [frontText, setFrontText] = useState("");
   const [frontTextColor, setFrontTextColor] = useState(null);
@@ -33,116 +30,86 @@ function EditCard({ loginToken }) {
   const [borderStyle, setBorderStyle] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://social-cards-wg2j.onrender.com/cards/${cardID}/`,{       
-      headers: {
+    axios
+      .get(`https://social-cards-wg2j.onrender.com/cards/${cardID}/`, {
+        headers: {
           authorization: `token ${loginToken}`,
-      },
-    })
-      .then((res) =>{ 
+        },
+      })
+      .then((res) => {
         setCards(res.data);
-        setFrontText(res.data.front_message)
-        setCanvasImg(res.data.front_image)
-        setFrontTextColor(res.data.text_color)
-        setTextAlign(res.data.text_align)
-        setTextFont(res.data.text_font)
-        setBorderColor(res.data.border_color)
-        setBorderStyle(res.data.border_style)
-        
-        // setLoading(false)
-        // setFrontText(card.front_message)
-        // setCanvasImg(card.front_image)
-        // setFrontTextColor(card.text_color)
-        // setTextAlign(card.text_align)
-        // setTextFont(card.text_font)
-        // setBorderColor(card.border_color)
-        // setBorderStyle(card.border_style)
-        // console.log(card)
-        
-        
-        
-    })
-  },[]);
+        setFrontText(res.data.front_message);
+        setCanvasImg(res.data.front_image);
+        setFrontTextColor(res.data.text_color);
+        setTextAlign(res.data.text_align);
+        setTextFont(res.data.text_font);
+        setBorderColor(res.data.border_color);
+        setBorderStyle(res.data.border_style);
+      });
+  }, []);
 
-
-
-  // if (!loginToken) {
-  //   return <Navigate to="/login" />;
-  // }
-
-
-  // if(isLoading){
-  //   return <div>Loading...</div>
-  // }
-
-  
-  // card && canvasImg && borderStyle &&();
-
-  return ( card && (
-    
-    <div className='new-post'>
-      <div className='navbar'>
-        <FrontImageButton setBottomHalf={setBottomHalf} />
-        <BorderButton setBottomHalf={setBottomHalf} />
-        <AddTextButton setBottomHalf={setBottomHalf} />
-        <SaveButton
-          loginToken={loginToken}
+  return (
+    card && (
+      <div className='new-post'>
+        <div className='navbar'>
+          <FrontImageButton setBottomHalf={setBottomHalf} />
+          <BorderButton setBottomHalf={setBottomHalf} />
+          <AddTextButton setBottomHalf={setBottomHalf} />
+          <SaveButton
+            loginToken={loginToken}
+            canvasImg={canvasImg}
+            frontText={frontText}
+            frontTextColor={frontTextColor}
+            textAlign={textAlign}
+            borderColor={borderColor}
+            borderStyle={borderStyle}
+            textFont={textFont}
+            cardID={cardID}
+          />
+        </div>
+        <ImageCanvas
           canvasImg={canvasImg}
+          borderColor={borderColor}
+          borderStyle={borderStyle}
           frontText={frontText}
           frontTextColor={frontTextColor}
           textAlign={textAlign}
-          borderColor={borderColor}
-          borderStyle={borderStyle}
           textFont={textFont}
-          cardID={cardID}
-
+          setTextFont={setTextFont}
+        />
+        <BottomHalf
+          bottomHalf={bottomHalf}
+          setCanvasImg={setCanvasImg}
+          borderColor={borderColor}
+          setBorderColor={setBorderColor}
+          borderStyle={borderStyle}
+          setBorderStyle={setBorderStyle}
+          setFrontText={setFrontText}
+          frontTextColor={frontTextColor}
+          setFrontTextColor={setFrontTextColor}
+          textAlign={textAlign}
+          setTextAlign={setTextAlign}
+          textFont={textFont}
+          setTextFont={setTextFont}
         />
       </div>
-      <ImageCanvas
-        canvasImg={canvasImg}
-        borderColor={borderColor}
-        borderStyle={borderStyle}
-        frontText={frontText}
-        frontTextColor={frontTextColor}
-        textAlign={textAlign}
-        textFont={textFont}
-        setTextFont={setTextFont}
-      />
-      <BottomHalf
-        bottomHalf={bottomHalf}
-        setCanvasImg={setCanvasImg}
-        borderColor={borderColor}
-        setBorderColor={setBorderColor}
-        borderStyle={borderStyle}
-        setBorderStyle={setBorderStyle}
-        setFrontText={setFrontText}
-        frontTextColor={frontTextColor}
-        setFrontTextColor={setFrontTextColor}
-        textAlign={textAlign}
-        setTextAlign={setTextAlign}
-        textFont={textFont}
-        setTextFont={setTextFont}
-      />
-    </div>
-  )
-    );
+    )
+  );
 }
-
-
-
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("front-image")}>
+  <button className='effect' onClick={() => setBottomHalf("front-image")}>
     Front
   </button>
 );
 const AddTextButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("add-text")}>
+  <button className='effect' onClick={() => setBottomHalf("add-text")}>
     Text
   </button>
 );
 const BorderButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("border-select")}>
+  <button className='effect' onClick={() => setBottomHalf("border-select")}>
     Border
   </button>
 );
@@ -156,36 +123,35 @@ function SaveButton({
   borderColor,
   borderStyle,
   cardID,
-  textFont
-
+  textFont,
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
-    
-    axios.patch(
-      `https://social-cards-wg2j.onrender.com/cards/${cardID}/`,
-      {
-        title: "test",
-        front_image: `${canvasImg}`,
-        front_message: `${frontText}`,
-        text_color: `${frontTextColor}`,
-        border_color: `${borderColor}`,
-        text_align: `${textAlign}`,
-        border_style: `${borderStyle}`,
-        font: `${textFont}`,
-      },
-      {
-        headers: {
-          authorization: `token ${loginToken}`,
+    axios
+      .patch(
+        `https://social-cards-wg2j.onrender.com/cards/${cardID}/`,
+        {
+          title: "test",
+          front_image: `${canvasImg}`,
+          front_message: `${frontText}`,
+          text_color: `${frontTextColor}`,
+          border_color: `${borderColor}`,
+          text_align: `${textAlign}`,
+          border_style: `${borderStyle}`,
+          font: `${textFont}`,
         },
-      }
-    )
-    .then((res) => {
-      navigate("/");
-    });
+        {
+          headers: {
+            authorization: `token ${loginToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        navigate("/");
+      });
   };
   return (
-    <button className="effect" onClick={handleClick}>
+    <button className='effect' onClick={handleClick}>
       Save
     </button>
   );
@@ -205,7 +171,6 @@ function BottomHalf(props) {
           setTextAlign={props.setTextAlign}
           textFont={props.textFont}
           setTextFont={props.setTextFont}
-
         />
       );
     case "border-select":
@@ -224,36 +189,37 @@ function BottomHalf(props) {
 
 //NEW POST IMAGE
 function ImageCanvas(props) {
-  // if(props.textFont === "sans-serif")
-  
   if (props.borderStyle === "none") {
     return (
-      <div className="canvas">
-        <img className="canvas-img" src={props.canvasImg} alt="" />
+      <div className='canvas'>
+        <img className='canvas-img' src={props.canvasImg} alt='' />
         <div
           className={props.textAlign}
-          style={{ 
+          style={{
             color: `${props.frontTextColor}`,
-            fontFamily: `${props.textFont}`
-          }}>
+            fontFamily: `${props.textFont}`,
+          }}
+        >
           {props.frontText}
         </div>
       </div>
     );
   } else {
     return (
-      <div className="canvas">
+      <div className='canvas'>
         <img
           style={{ border: `5px ${props.borderStyle} ${props.borderColor}` }}
-          className="canvas-img"
+          className='canvas-img'
           src={props.canvasImg}
-          alt=""
+          alt=''
         />
         <div
           className={props.textAlign}
-          style={{ 
+          style={{
             color: `${props.frontTextColor}`,
-            fontFamily: `${props.textFont}` }}>
+            fontFamily: `${props.textFont}`,
+          }}
+        >
           {props.frontText}
         </div>
       </div>
@@ -271,16 +237,16 @@ function SearchBar({ setCanvasImg }) {
   };
   return (
     <>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className='form' onSubmit={handleSubmit}>
         <input
-          className="search-bar"
-          type="text"
+          className='search-bar'
+          type='text'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button>Search</button>
       </form>
-      <div className="wrapper">
+      <div className='wrapper'>
         <FrontCard
           token={token.token}
           query={query}
@@ -318,16 +284,16 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div className="return-box">
-        <ul key={query} className="search-returns">
+      <div className='return-box'>
+        <ul key={query} className='search-returns'>
           {img.map((i) => (
-            <div className="search-wrapper">
+            <div className='search-wrapper'>
               <img
                 key={i.imgUrl}
-                className="search-element"
+                className='search-element'
                 onClick={() => handleClick(i)}
                 src={i.imgUrl}
-                alt="search result"
+                alt='search result'
               />
             </div>
           ))}
@@ -360,32 +326,32 @@ function TextInput(props) {
   };
 
   return (
-    <div className="text-customizer">
-      <div className="front-input">
+    <div className='text-customizer'>
+      <div className='front-input'>
         <input onChange={handleText} value={textInputField} />
       </div>
-      <label htmlFor="text-color">
+      <label htmlFor='text-color'>
         <select
           value={props.frontTextColor}
           onChange={(e) => props.setFrontTextColor(e.target.value)}
         >
-          <option value="black">Black</option>
-          <option value-="red">Red</option>
-          <option value="green">Green</option>
-          <option value="purple">Purple</option>
-          <option value="blue">Blue</option>
-          <option value="yellow">Yellow</option>
-          <option value="orange">Orange</option>
-          <option value="pink">Pink</option>
-          <option value="white">White</option>
+          <option value='black'>Black</option>
+          <option value-='red'>Red</option>
+          <option value='green'>Green</option>
+          <option value='purple'>Purple</option>
+          <option value='blue'>Blue</option>
+          <option value='yellow'>Yellow</option>
+          <option value='orange'>Orange</option>
+          <option value='pink'>Pink</option>
+          <option value='white'>White</option>
         </select>
       </label>
 
-      <label htmlFor="text-alignment">
+      <label htmlFor='text-alignment'>
         <select value={displayAlign} onChange={handleAlignment}>
-          <option value="center">Center</option>
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
+          <option value='center'>Center</option>
+          <option value='top'>Top</option>
+          <option value='bottom'>Bottom</option>
         </select>
       </label>
       <label htmlFor='text-font'>
@@ -403,36 +369,36 @@ function TextInput(props) {
 //Customize Border Color and Style
 function BorderSelect(props) {
   return (
-    <div className="border-select">
+    <div className='border-select'>
       <>
-        <label htmlFor="border-style">
+        <label htmlFor='border-style'>
           Pick a Border Style
           <select
             value={props.borderStyle}
             onChange={(e) => props.setBorderStyle(e.target.value)}
           >
-            <option value="none">None</option>
-            <option value="solid">Solid</option>
-            <option value-="dotted">Dotted</option>
-            <option value="double">Double</option>
+            <option value='none'>None</option>
+            <option value='solid'>Solid</option>
+            <option value-='dotted'>Dotted</option>
+            <option value='double'>Double</option>
           </select>
         </label>
 
-        <label htmlFor="border-color">
+        <label htmlFor='border-color'>
           Pick a Border Color
           <select
             value={props.borderColor}
             onChange={(e) => props.setBorderColor(e.target.value)}
           >
-            <option value="black">Black</option>
-            <option value-="red">Red</option>
-            <option value="green">Green</option>
-            <option value="purple">Purple</option>
-            <option value="blue">Blue</option>
-            <option value="yellow">Yellow</option>
-            <option value="orange">Orange</option>
-            <option value="pink">Pink</option>
-            <option value="white">White</option>
+            <option value='black'>Black</option>
+            <option value-='red'>Red</option>
+            <option value='green'>Green</option>
+            <option value='purple'>Purple</option>
+            <option value='blue'>Blue</option>
+            <option value='yellow'>Yellow</option>
+            <option value='orange'>Orange</option>
+            <option value='pink'>Pink</option>
+            <option value='white'>White</option>
           </select>
         </label>
       </>

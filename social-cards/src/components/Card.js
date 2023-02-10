@@ -10,11 +10,10 @@ function Card({ loginToken, card, loggedInUser, follow }) {
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  // const handleProfile = (owner) => {
-  //   navigate(`/cards/${owner}/`);
-  // };
-
   const handleClick = (card) => {
+    if (!loginToken) {
+      navigate("/login");
+    }
     console.log(card);
     console.log(card.id);
     axios
@@ -31,13 +30,8 @@ function Card({ loginToken, card, loggedInUser, follow }) {
       });
   };
 
-  // const handleEdit = (card.id) => {
-  //   navigate()
-
-  // };
-
   return (
-    <div className="post">
+    <div className='post'>
       <CardHeader
         follow={follow}
         owner={card.owner}
@@ -46,23 +40,14 @@ function Card({ loginToken, card, loggedInUser, follow }) {
         navigate={navigate}
       />
 
-      {/* BUTTON THAT TAKES YOU TO PROFILE
-      <button
-        key={card.owner}
-        onClick={() => handleProfile(card.owner)}
-        className="user-tag"
-      >
-        {card.owner}
-      </button> */}
-
-      <div className="canvas">
+      <div className='canvas'>
         <img
           style={{
             border: `5px ${card.border_style} ${card.border_color}`,
           }}
-          className="canvas-img"
+          className='canvas-img'
           src={card.front_image}
-          alt=""
+          alt=''
         />
         <div
           className={card.text_align}
@@ -72,11 +57,11 @@ function Card({ loginToken, card, loggedInUser, follow }) {
         </div>
       </div>
 
-      <div className="response-menu">
+      <div className='response-menu'>
         <button
           key={card.id}
           onClick={() => handleClick(card)}
-          className="like"
+          className='like'
         >
           ❤️ {card.likes_total + like}
         </button>
@@ -88,13 +73,12 @@ function Card({ loginToken, card, loggedInUser, follow }) {
           navigate={navigate}
         />
         {card.owner === loggedInUser && (
-          <button className="user-tag">
-            <Link className="links" to={`/edit/card/${card.id}`}>
+          <button className='user-tag'>
+            <Link className='links' to={`/edit/card/${card.id}`}>
               edit
             </Link>
           </button>
         )}
-        {/* <EditCard card={card} loginToken={loginToken}/>  */}
       </div>
     </div>
   );
@@ -113,7 +97,7 @@ function CardHeader({ owner, loggedInUser, navigate, loginToken, follow }) {
         onClick={() => {
           handleProfile(owner);
         }}
-        className="user-tag"
+        className='user-tag'
       >
         {owner}
       </button>
@@ -125,7 +109,7 @@ function CardHeader({ owner, loggedInUser, navigate, loginToken, follow }) {
         onClick={() => {
           handleProfile(owner);
         }}
-        className="user-tag"
+        className='user-tag'
       >
         {owner}
       </button>
@@ -149,37 +133,33 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
 
   if (owner !== loggedInUser || loggedInUser === null) return null;
   return (
-    <button className="user-tag" onClick={handleDelete}>
+    <button className='user-tag' onClick={handleDelete}>
       delete
     </button>
   );
 }
 
-function FollowButton({ owner, loginToken, follow, }) {
+function FollowButton({ owner, loginToken, follow }) {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const handleUnfollow =  (owner, loginToken) =>{
+  const handleUnfollow = (owner, loginToken) => {
     axios
-      .delete(
-        `https://social-cards-wg2j.onrender.com/unfollow/${owner}/`,
-        {
-          headers: {
-            authorization: `token ${loginToken}`,
-          },
-        }
-      )
+      .delete(`https://social-cards-wg2j.onrender.com/unfollow/${owner}/`, {
+        headers: {
+          authorization: `token ${loginToken}`,
+        },
+      })
       .then((res) => console.log("unfollowed"));
-  }
+  };
   const handleFollow = (owner, loginToken) => {
-    // follow &&
-    //   follow.map((f) => {
-    //     setUser(f.followed_list);
-    //   });
-    // user && user.map((l) => console.log(l));
+    if (!loginToken) {
+      navigate("/login");
+    }
     console.log(owner, loginToken);
     axios
       .post(
         `https://social-cards-wg2j.onrender.com/follower/${owner}/`,
-       {}, 
+        {},
         {
           headers: {
             authorization: `token ${loginToken}`,
@@ -189,19 +169,18 @@ function FollowButton({ owner, loginToken, follow, }) {
       .then((res) => console.log("followed"));
   };
 
-  // console.log(follow)
   return (
     <>
       {follow.includes(owner) ? (
         <button
-          className="user-tag"
+          className='user-tag'
           onClick={() => handleUnfollow(owner, loginToken)}
         >
           ¿unfollow 🥹?
         </button>
       ) : (
         <button
-          className="user-tag"
+          className='user-tag'
           onClick={() => handleFollow(owner, loginToken)}
         >
           ¿follow 🤩?
