@@ -6,15 +6,6 @@ import placeholder from "../no-cover-image.png";
 import he from "he";
 import { Navigate, useNavigate, Link, Route, Routes } from "react-router-dom";
 
-// function Canvas({ canvasImg }) {
-//   drawImage(canvasImg);
-//   return (
-//     <>
-//       <canvas className='canvas'></canvas>
-//     </>
-//   );
-// }
-
 function NewPost({ loginToken }) {
   const [canvasImg, setCanvasImg] = useState(placeholder);
   const [frontText, setFrontText] = useState("");
@@ -27,11 +18,11 @@ function NewPost({ loginToken }) {
   const [borderStyle, setBorderStyle] = useState("none");
 
   if (!loginToken) {
-    return <Navigate to="/login" />;
+    return <Navigate to='/login' />;
   }
   return (
-    <div className="new-post">
-      <div className="navbar">
+    <div className='new-post'>
+      <div className='navbar'>
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
         <AddTextButton setBottomHalf={setBottomHalf} />
@@ -77,17 +68,17 @@ function NewPost({ loginToken }) {
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("front-image")}>
+  <button className='effect' onClick={() => setBottomHalf("front-image")}>
     Front
   </button>
 );
 const AddTextButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("add-text")}>
+  <button className='effect' onClick={() => setBottomHalf("add-text")}>
     Text
   </button>
 );
 const BorderButton = ({ setBottomHalf }) => (
-  <button className="effect" onClick={() => setBottomHalf("border-select")}>
+  <button className='effect' onClick={() => setBottomHalf("border-select")}>
     Border
   </button>
 );
@@ -128,7 +119,7 @@ function SaveButton({
       });
   };
   return (
-    <button className="effect" onClick={handleClick}>
+    <button className='effect' onClick={handleClick}>
       Save
     </button>
   );
@@ -166,12 +157,10 @@ function BottomHalf(props) {
 
 //NEW POST IMAGE
 function ImageCanvas(props) {
-  // if(props.textFont === "sans-serif")
-
   if (props.borderStyle === "none") {
     return (
-      <div className="canvas">
-        <img className="canvas-img" src={props.canvasImg} alt="" />
+      <div className='canvas'>
+        <img className='canvas-img' src={props.canvasImg} alt='' />
         <div
           className={props.textAlign}
           style={{
@@ -185,12 +174,12 @@ function ImageCanvas(props) {
     );
   } else {
     return (
-      <div className="canvas">
+      <div className='canvas'>
         <img
           style={{ border: `5px ${props.borderStyle} ${props.borderColor}` }}
-          className="canvas-img"
+          className='canvas-img'
           src={props.canvasImg}
-          alt=""
+          alt=''
         />
         <div
           className={props.textAlign}
@@ -216,16 +205,16 @@ function SearchBar({ setCanvasImg }) {
   };
   return (
     <>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className='form' onSubmit={handleSubmit}>
         <input
-          className="search-bar"
-          type="text"
+          className='search-bar'
+          type='text'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button className="effect">Search</button>
+        <button className='effect'>Search</button>
       </form>
-      <div className="wrapper">
+      <div className='wrapper'>
         <FrontCard
           token={token.token}
           query={query}
@@ -263,16 +252,16 @@ function FrontCard({ token, query, setCanvasImg }) {
 
   return (
     img.length > 0 && (
-      <div className="return-box">
-        <ul key={query} className="search-returns">
+      <div className='return-box'>
+        <ul key={query} className='search-returns'>
           {img.map((i) => (
-            <div className="search-wrapper">
+            <div className='search-wrapper'>
               <img
                 key={i.imgUrl}
-                className="search-element"
+                className='search-element'
                 onClick={() => handleClick(i)}
                 src={i.imgUrl}
-                alt="search result"
+                alt='search result'
               />
             </div>
           ))}
@@ -280,25 +269,6 @@ function FrontCard({ token, query, setCanvasImg }) {
       </div>
     )
   );
-
-  // if (canvasImg != null) {
-  //   return (
-  //     <>
-  //       <Canvas canvasImg={canvasImg} />
-  //       <SearchBar />
-  //       <div className='homepage'>
-  //         {img.map((i) => (
-  //           <img
-  //             onClick={() => handleClick(i)}
-  //             className='front-card'
-  //             src={i.imgUrl}
-  //             alt='work please'
-  //           />
-  //         ))}
-  //       </div>
-  //     </>
-  //   );
-  // }
 }
 
 //New post Text Font selection and Input?
@@ -324,79 +294,79 @@ function TextInput(props) {
   };
 
   return (
-    <div className="text-customizer">
-      <div className="front-input">
+    <div className='text-customizer'>
+      <div className='front-input'>
         <input onChange={handleText} value={textInputField} />
       </div>
-      <label htmlFor="text-color">
+      <label htmlFor='text-color'>
         <select
           value={props.frontTextColor}
           onChange={(e) => props.setFrontTextColor(e.target.value)}
         >
-          <option value="black">Black</option>
-          <option value-="red">Red</option>
-          <option value="green">Green</option>
-          <option value="purple">Purple</option>
-          <option value="blue">Blue</option>
-          <option value="yellow">Yellow</option>
-          <option value="orange">Orange</option>
-          <option value="pink">Pink</option>
-          <option value="white">White</option>
+          <option value='black'>Black</option>
+          <option value-='red'>Red</option>
+          <option value='green'>Green</option>
+          <option value='purple'>Purple</option>
+          <option value='blue'>Blue</option>
+          <option value='yellow'>Yellow</option>
+          <option value='orange'>Orange</option>
+          <option value='pink'>Pink</option>
+          <option value='white'>White</option>
         </select>
       </label>
 
-      <label htmlFor="text-alignment">
+      <label htmlFor='text-alignment'>
         <select value={displayAlign} onChange={handleAlignment}>
-          <option value="center">Center</option>
-          <option value="top">Top</option>
-          <option value="bottom">Bottom</option>
+          <option value='center'>Center</option>
+          <option value='top'>Top</option>
+          <option value='bottom'>Bottom</option>
         </select>
       </label>
-      <label htmlFor="text-font">
+      <label htmlFor='text-font'>
         <select value={displayFont} onChange={handleFont}>
-          <option value="sans-serif">Sans Serif</option>
-          <option value="serif">Serif</option>
-          <option value="monospace">Monospace</option>
-          <option value="cursive">Cursive</option>
+          <option value='sans-serif'>Sans Serif</option>
+          <option value='serif'>Serif</option>
+          <option value='monospace'>Monospace</option>
+          <option value='cursive'>Cursive</option>
         </select>
       </label>
     </div>
   );
 }
 
-//Customize Border Color and Style
+// CUSTOMIZE BORDER AND STYLE
 function BorderSelect(props) {
   return (
-    <div className="border-select">
+    <div className='border-select'>
       <>
-        <label htmlFor="border-style">
+        <label htmlFor='border-style'>
           Pick a Border Style
           <select
             value={props.borderStyle}
             onChange={(e) => props.setBorderStyle(e.target.value)}
           >
-            <option value="none">None</option>
-            <option value="solid">Solid</option>
-            <option value-="dotted">Dotted</option>
-            <option value="double">Double</option>
+            <option value='none'>None</option>
+            <option value='solid'>Solid</option>
+            <option value-='dotted'>Dotted</option>
+            <option value='double'>Double</option>
           </select>
         </label>
 
-        <label htmlFor="border-color">
+        <label htmlFor='border-color'>
           Pick a Border Color
           <select
             value={props.borderColor}
             onChange={(e) => props.setBorderColor(e.target.value)}
           >
-            <option value="black">Black</option>
-            <option value-="red">Red</option>
-            <option value="green">Green</option>
-            <option value="purple">Purple</option>
-            <option value="blue">Blue</option>
-            <option value="yellow">Yellow</option>
-            <option value="orange">Orange</option>
-            <option value="pink">Pink</option>
-            <option value="white">White</option>
+            <option value='black'>Black</option>
+            <option value-='red'>Red</option>
+            <option value='green'>Green</option>
+            <option value='purple'>Purple</option>
+            <option value='blue'>Blue</option>
+            <option value='yellow'>Yellow</option>
+            <option value='orange'>Orange</option>
+            <option value='pink'>Pink</option>
+            <option value='white'>White</option>
           </select>
         </label>
       </>

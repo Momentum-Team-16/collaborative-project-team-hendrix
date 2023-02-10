@@ -12,7 +12,7 @@ import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   const [loginToken, setToken] = useLocalStorageState("SocialCardsToken", "");
-  const [follow, setFollow] = useState(false);
+  const [follow, setFollow] = useState([]);
   const [loggedInUser, setLoggedInUser] = useLocalStorageState(
     "cardsLoggedInUser",
     ""
@@ -33,21 +33,14 @@ function App() {
         });
         console.log(followers);
         setFollow(followers);
-        // console.log(res.data);
-        // console.log("filtering for users");
-        // const filterValue = owner;
-        // const filteredUsers = user.filter((val) =>
-        //   val.areas.includes(filterValue)
-        // );
-        // console.log(filteredUsers);
       });
   }, [loginToken]);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
         <Route
-          path="/"
+          path='/'
           element={
             <Homepage
               loginToken={loginToken}
@@ -57,23 +50,23 @@ function App() {
           }
         ></Route>
         <Route
-          path="/new/card"
+          path='/new/card'
           element={<NewPost loginToken={loginToken} />}
         ></Route>
         <Route
-          path="/login"
+          path='/login'
           element={
             <LogIn setToken={setToken} setLoggedInUser={setLoggedInUser} />
           }
         ></Route>
         <Route
-          path="/logout"
+          path='/logout'
           element={
             <LogOut setToken={setToken} setLoggedInUser={setLoggedInUser} />
           }
         ></Route>
         <Route
-          path="/cards/:username"
+          path='/cards/:username'
           element={
             <User
               follow={follow}
@@ -83,7 +76,7 @@ function App() {
           }
         ></Route>
         <Route
-          path="/cards/:username/followed"
+          path='/cards/:username/followed'
           element={
             <FollowedList
               loginToken={loginToken}
@@ -94,11 +87,11 @@ function App() {
         ></Route>
 
         <Route
-          path="/edit/card/:cardID/"
+          path='/edit/card/:cardID/'
           element={<EditCard loginToken={loginToken} />}
         ></Route>
         <Route
-          path="/following"
+          path='/following'
           element={
             <Following
               follow={follow}
@@ -130,7 +123,7 @@ function Following({ loginToken, loggedInUser, follow }) {
     cards && (
       <div>
         <h2>Following:</h2>
-        <div className="card-zone">
+        <div className='card-zone'>
           {cards.map((card) => (
             <Card
               follow={follow}
@@ -173,22 +166,22 @@ function User({ loginToken, loggedInUser, follow }) {
   return (
     cards && (
       <>
-        <header className="homepage-nav">
+        <header className='homepage-nav'>
           <button>
-            <Link to="/new/card">New Post</Link>
+            <Link to='/new/card'>New Post</Link>
           </button>
           <button>
-            {!loginToken && <Link to="/login">Login</Link>}
-            {loginToken && <Link to="/logout">Logout</Link>}
+            {!loginToken && <Link to='/login'>Login</Link>}
+            {loginToken && <Link to='/logout'>Logout</Link>}
           </button>
           {loggedInUser && <button>{loggedInUser}</button>}
         </header>
-        <button className="user-tag">
-          <Link to={`/cards/${username}/followed`} className="links">
+        <button className='user-tag'>
+          <Link to={`/cards/${username}/followed`} className='links'>
             following
           </Link>
         </button>
-        <div className="card-zone">
+        <div className='card-zone'>
           {cards.map((card) => (
             <Card
               follow={follow}
