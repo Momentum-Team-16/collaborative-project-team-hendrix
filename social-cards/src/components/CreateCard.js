@@ -25,8 +25,8 @@ function NewPost({ loginToken }) {
     <div className='new-post'>
       <h1 className="banner">New Post</h1>
       <div className='navbar'>
-        <button className='effect'>
-          <Link to='/'>Home</Link>
+        <button className='user-tag effect'>
+          <Link to='/' className="links">Home</Link>
         </button>
         <FrontImageButton setBottomHalf={setBottomHalf} />
         <BorderButton setBottomHalf={setBottomHalf} />
@@ -73,17 +73,17 @@ function NewPost({ loginToken }) {
 
 // NAVBAR BUTTONS
 const FrontImageButton = ({ setBottomHalf }) => (
-  <button className='effect' onClick={() => setBottomHalf("front-image")}>
+  <button className='user-tag effect' onClick={() => setBottomHalf("front-image")}>
     Front
   </button>
 );
 const AddTextButton = ({ setBottomHalf }) => (
-  <button className='effect' onClick={() => setBottomHalf("add-text")}>
+  <button className='user-tag effect' onClick={() => setBottomHalf("add-text")}>
     Text
   </button>
 );
 const BorderButton = ({ setBottomHalf }) => (
-  <button className='effect' onClick={() => setBottomHalf("border-select")}>
+  <button className='user-tag effect' onClick={() => setBottomHalf("border-select")}>
     Border
   </button>
 );
@@ -124,7 +124,7 @@ function SaveButton({
       });
   };
   return (
-    <button className='effect' onClick={handleClick}>
+    <button className='user-tag effect' onClick={handleClick}>
       Save
     </button>
   );
@@ -217,7 +217,7 @@ function SearchBar({ setCanvasImg }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button className='effect'>Search</button>
+        <button className='user-tag'>Search</button>
       </form>
       <div className='wrapper'>
         <FrontCard
