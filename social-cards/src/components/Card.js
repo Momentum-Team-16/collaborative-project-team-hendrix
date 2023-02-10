@@ -155,8 +155,20 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
   );
 }
 
-function FollowButton({ owner, loginToken, follow }) {
+function FollowButton({ owner, loginToken, follow, }) {
   const [user, setUser] = useState(null);
+  const handleUnfollow =  (owner, loginToken) =>{
+    axios
+      .delete(
+        `https://social-cards-wg2j.onrender.com/unfollow/${owner}/`,
+        {
+          headers: {
+            authorization: `token ${loginToken}`,
+          },
+        }
+      )
+      .then((res) => console.log("unfollowed"));
+  }
   const handleFollow = (owner, loginToken) => {
     // follow &&
     //   follow.map((f) => {
@@ -166,8 +178,8 @@ function FollowButton({ owner, loginToken, follow }) {
     console.log(owner, loginToken);
     axios
       .post(
-        `https://social-cards-wg2j.onrender.com/follower/${owner}`,
-        {},
+        `https://social-cards-wg2j.onrender.com/follower/${owner}/`,
+       {}, 
         {
           headers: {
             authorization: `token ${loginToken}`,
@@ -177,22 +189,22 @@ function FollowButton({ owner, loginToken, follow }) {
       .then((res) => console.log("followed"));
   };
 
-  console.log(follow)
+  // console.log(follow)
   return (
     <>
       {follow.includes(owner) ? (
         <button
           className="user-tag"
-          onClick={() => handleFollow(owner, loginToken)}
+          onClick={() => handleUnfollow(owner, loginToken)}
         >
-          ¿follow?
+          ¿unfollow 🥹?
         </button>
       ) : (
         <button
           className="user-tag"
           onClick={() => handleFollow(owner, loginToken)}
         >
-          ¿unfollow 🥹?
+          ¿follow 🤩?
         </button>
       )}
     </>

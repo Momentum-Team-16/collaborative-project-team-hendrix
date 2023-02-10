@@ -161,7 +161,7 @@ function SaveButton({
 }) {
   const navigate = useNavigate();
   const handleClick = (e) => {
-    console.log(textFont)
+    
     axios.patch(
       `https://social-cards-wg2j.onrender.com/cards/${cardID}/`,
       {

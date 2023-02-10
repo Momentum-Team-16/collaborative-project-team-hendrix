@@ -74,7 +74,7 @@ function App() {
         ></Route>
         <Route
           path="/cards/:username"
-          element={<User loginToken={loginToken} loggedInUser={loggedInUser} />}
+          element={<User follow={follow}loginToken={loginToken} loggedInUser={loggedInUser} />}
         ></Route>
         <Route
           path="/cards/:username/followed"
@@ -110,7 +110,7 @@ function FollowedList({ loginToken, loggedInUser, follow }) {
   );
 }
 
-function User({ loginToken, loggedInUser }) {
+function User({ loginToken, loggedInUser, follow }) {
   const { username } = useParams();
   // return <p>hi {username}</p>;
 
@@ -135,11 +135,12 @@ function User({ loginToken, loggedInUser }) {
           {loggedInUser && <button>{loggedInUser}</button>}
         </header>
         <button className="user-tag">
-          <Link to={`/cards/${username}/followed`}>followers</Link>
+          <Link to={`/cards/${username}/followed`} className="links">following</Link>
         </button>
         <div className="card-zone">
           {cards.map((card) => (
             <Card
+              follow={follow}
               card={card}
               loginToken={loginToken}
               loggedInUser={loggedInUser}
