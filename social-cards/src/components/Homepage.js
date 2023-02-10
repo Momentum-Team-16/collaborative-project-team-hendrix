@@ -17,36 +17,12 @@ function Homepage({ loginToken, loggedInUser, follow }) {
       .then((res) => setCards(res.data));
   }, []);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://social-cards-wg2j.onrender.com/users/`, {
-  //       headers: {
-  //         authorization: `token ${loginToken}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       let followers = [];
-  //       console.log(res.data[0]);
-  //       res.data[0].followed_list.map((followed) => {
-  //         followers.push(followed.followed);
-  //       });
-  //       console.log(followers);
-  //       setFollow(followers);
-  //       // console.log(res.data);
-  //       // console.log("filtering for users");
-  //       // const filterValue = owner;
-  //       // const filteredUsers = user.filter((val) =>
-  //       //   val.areas.includes(filterValue)
-  //       // );
-  //       // console.log(filteredUsers);
-  //     });
-  // }, [loginToken]);
 
-  // follow && follow.map((f) => console.log(f.followed_list));
 
   return (
     cards && (
       <>
+      {loginToken && <h2 className="banner">¡Welcome! {loggedInUser}</h2>}
         <header className="homepage-nav">
           <button className="user-tag">
             <Link className="links" to="/new/card">
@@ -65,9 +41,12 @@ function Homepage({ loginToken, loggedInUser, follow }) {
               </Link>
             )}
           </button>
-          {loggedInUser && (
-            <a className="user-tag"> ¡Welcome! {loggedInUser}</a>
-          )}
+          {/* {loggedInUser && (
+            <button className="user-tag"> ¡Welcome! {loggedInUser}</button>
+          )} */}
+          {loginToken &&( <button className="user-tag">
+            <Link className="links" to="/following">following</Link>
+          </button>)}
         </header>
         <div className="card-zone">
           {cards.map((card) => (
