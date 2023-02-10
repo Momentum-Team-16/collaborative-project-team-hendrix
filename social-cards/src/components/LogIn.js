@@ -6,7 +6,7 @@ import token from "../token.json";
 import he from "he";
 import { useNavigate, Link, Route, Routes } from "react-router-dom";
 
-function LogIn({setToken, setLoggedInUser }) {
+function LogIn({ setToken, setLoggedInUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ function LogIn({setToken, setLoggedInUser }) {
       })
       .then((res) => {
         setToken(res.data.auth_token);
-        setLoggedInUser(username)
+        setLoggedInUser(username);
         navigate(-1);
       })
       .catch((e) => setError(e));
