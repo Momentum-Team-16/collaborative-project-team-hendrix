@@ -15,10 +15,13 @@ function Homepage({ loginToken, loggedInUser, follow }) {
       .then((res) => setCards(res.data));
   }, []);
 
+  // if(!loginToken)
+  //   <h1 className='banner'>Welcome!</h1>
+
   return (
     cards && (
       <>
-        {loginToken && <h1 className='banner'>¡Welcome! {loggedInUser}</h1>}
+        {loginToken ? <h1 className='banner'>Welcome! {loggedInUser}</h1> : <h1 className='banner'>Welcome!</h1> }
         <header className='homepage-nav'>
           <button className='user-tag'>
             <Link className='links' to='/'>
