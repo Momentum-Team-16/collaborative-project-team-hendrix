@@ -21,6 +21,11 @@ function Homepage({ loginToken, loggedInUser, follow }) {
         {loginToken && <h2 className='banner'>¡Welcome! {loggedInUser}</h2>}
         <header className='homepage-nav'>
           <button className='user-tag'>
+            <Link className='links' to='/'>
+              Home
+            </Link>
+          </button>
+          <button className='user-tag'>
             <Link className='links' to='/new/card'>
               New Post
             </Link>
@@ -40,7 +45,7 @@ function Homepage({ loginToken, loggedInUser, follow }) {
           {loginToken && (
             <button className='user-tag'>
               <Link className='links' to='/following'>
-                following
+                You're Following
               </Link>
             </button>
           )}

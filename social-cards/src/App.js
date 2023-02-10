@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import LogIn from "./components/LogIn";
+import { LogIn, Register } from "./components/LogIn";
 import NewPost from "./components/CreateCard";
 import Homepage from "./components/Homepage";
 import EditCard from "./components/EditCard";
@@ -65,6 +65,7 @@ function App() {
             <LogOut setToken={setToken} setLoggedInUser={setLoggedInUser} />
           }
         ></Route>
+        <Route path='/register' element={<Register />}></Route>
         <Route
           path='/cards/:username'
           element={
@@ -122,7 +123,10 @@ function Following({ loginToken, loggedInUser, follow }) {
   return (
     cards && (
       <div>
-        <h2>Following:</h2>
+        <h2 className='banner'>You are Following:</h2>
+        <button className='links'>
+          <Link to='/'>Home</Link>
+        </button>
         <div className='card-zone'>
           {cards.map((card) => (
             <Card
@@ -142,7 +146,7 @@ function FollowedList({ loginToken, loggedInUser, follow }) {
   const { username } = useParams();
   return (
     <>
-      <p>{username} is following:</p>
+      <h2 className='banner'>{username} is following:</h2>
       <ul>
         {follow.map((f) => (
           <li>{f}</li>
@@ -167,20 +171,35 @@ function User({ loginToken, loggedInUser, follow }) {
     cards && (
       <>
         <header className='homepage-nav'>
-          <button>
-            <Link to='/new/card'>New Post</Link>
+          <button className='user-tag'>
+            <Link to='/' className='links'>
+              Home
+            </Link>
           </button>
-          <button>
-            {!loginToken && <Link to='/login'>Login</Link>}
-            {loginToken && <Link to='/logout'>Logout</Link>}
+          <button className='user-tag'>
+            <Link to='/new/card' className='links'>
+              New Post
+            </Link>
           </button>
-          {loggedInUser && <button>{loggedInUser}</button>}
+          <button className='user-tag'>
+            {!loginToken && (
+              <Link to='/login' className='links'>
+                Login
+              </Link>
+            )}
+            {loginToken && (
+              <Link to='/logout' className='links'>
+                Logout
+              </Link>
+            )}
+          </button>
+          {/* {loggedInUser && <button>{loggedInUser}</button>} */}
+          <button className='user-tag'>
+            <Link to={`/cards/${username}/followed`} className='links'>
+              {username} is following
+            </Link>
+          </button>
         </header>
-        <button className='user-tag'>
-          <Link to={`/cards/${username}/followed`} className='links'>
-            following
-          </Link>
-        </button>
         <div className='card-zone'>
           {cards.map((card) => (
             <Card
