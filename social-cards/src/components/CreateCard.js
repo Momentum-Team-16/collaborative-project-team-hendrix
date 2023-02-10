@@ -21,7 +21,9 @@ function NewPost({ loginToken }) {
     return <Navigate to='/login' />;
   }
   return (
+    
     <div className='new-post'>
+      <h1 className="banner">New Post</h1>
       <div className='navbar'>
         <button className='effect'>
           <Link to='/'>Home</Link>

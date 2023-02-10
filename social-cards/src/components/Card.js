@@ -128,6 +128,7 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
       },
     }).then((res) => {
       navigate("/");
+      (window.location.reload())
     });
   };
 
@@ -142,8 +143,8 @@ function DeleteCard({ owner, cardId, loginToken, loggedInUser, navigate }) {
 function FollowButton({ owner, loginToken, follow }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  //const [isFollowingButton, setFollowingButton]
-  //const
+  const [isFollowingButton, setFollowingButton] = useState("")
+  
 
   const handleUnfollow = (owner, loginToken) => {
     axios

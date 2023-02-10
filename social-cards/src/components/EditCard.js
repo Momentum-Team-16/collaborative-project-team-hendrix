@@ -51,6 +51,8 @@ function EditCard({ loginToken }) {
   return (
     card && (
       <div className='new-post'>
+        <h1 className="banner">Edit Card</h1>
+
         <div className='navbar'>
           <FrontImageButton setBottomHalf={setBottomHalf} />
           <BorderButton setBottomHalf={setBottomHalf} />

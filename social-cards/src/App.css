@@ -221,6 +221,12 @@ body,
 .banner {
   background-color: rgba(0, 0, 106, 0.809);
   color: white;
+  margin-top: 0;
+  height: 5%;
+}
+
+h1 {
+  padding: 1em;
 }
 
 .login-wrapper {

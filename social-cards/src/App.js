@@ -123,8 +123,8 @@ function Following({ loginToken, loggedInUser, follow }) {
   return (
     cards && (
       <div>
-        <h2 className='banner'>You are Following:</h2>
-        <button className='links'>
+        <h1 className='banner'>You are Following:</h1>
+        <button className='links'  >
           <Link to='/'>Home</Link>
         </button>
         <div className='card-zone'>
@@ -146,7 +146,7 @@ function FollowedList({ loginToken, loggedInUser, follow }) {
   const { username } = useParams();
   return (
     <>
-      <h2 className='banner'>{username} is following:</h2>
+      <h1 className='banner'>{username} is following:</h1>
       <ul>
         {follow.map((f) => (
           <li>{f}</li>
@@ -170,6 +170,7 @@ function User({ loginToken, loggedInUser, follow }) {
   return (
     cards && (
       <>
+        <h1 className="banner">{username}</h1>
         <header className='homepage-nav'>
           <button className='user-tag'>
             <Link to='/' className='links'>
