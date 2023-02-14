@@ -1,0 +1,248 @@
+html,
+body,
+#root,
+.react-root {
+  height: 100%;
+  width: 100%;
+}
+
+.front-card:hover {
+  border: 2px black solid;
+}
+.App {
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  /* border: solid 2px black; */
+  height: 300px;
+  /* width: 300px; */
+  align-content: center;
+  display: flex;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.top {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bottom {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* .canvas {
+  height: 250px;
+  width: 250px;
+  border: solid 1px black; 
+  justify-content: center;
+} */
+
+.wrapper {
+  padding: 5px;
+  display: flex;
+  margin: auto;
+  margin: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.form {
+  display: flex;
+  padding-top: 15px;
+  margin: auto;
+  justify-content: center;
+}
+
+.new-post {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+.search-returns {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(auto-fit, minmax(100px, 125px));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 125px));
+  grid-auto-flow: row;
+  grid-gap: 5px;
+  padding: 0px;
+  justify-content: center;
+}
+.return-box {
+  width: 100%;
+  display: flex;
+}
+.search-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.search-element {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  justify-content: center;
+}
+
+/* .search-bar {
+  width: 100%;
+} */
+
+.navbar {
+  width: 100%;
+  padding: 10px;
+  justify-content: center;
+  display: flex;
+}
+
+/* OLD CSS for canvas image
+.canvas-img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  padding: 3px;
+} */
+
+.canvas-img {
+  margin: 0 auto;
+  padding: 5px;
+}
+
+.border-select,
+.text-customizer {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.border-style,
+.border-color {
+  margin: 1%;
+}
+
+.effect {
+  text-align: center;
+  height: 50px;
+  width: 4%;
+  font-size: medium;
+  border-radius: 3px;
+  /* background-color: rgb(165, 167, 165);
+  color: rgba(0, 0, 106, 0.809); */
+  margin: 2px 0.5px;
+}
+
+.effect:hover {
+  background-color: brown;
+}
+
+.user-tag {
+  border: 1px solid rgba(0, 0, 106, 0.809);
+  align-self: left;
+  font-size: medium;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-radius: 15px;
+  background-color: rgb(228, 232, 228);
+  color: rgba(0, 0, 106, 0.809);
+}
+
+.user-tag:hover,
+.links:hover,
+.like:hover {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.links {
+  align-self: left;
+  font-size: medium;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  border-radius: 15px;
+  /* background-color: rgb(228, 232, 228); */
+  color: rgba(0, 0, 106, 0.809);
+  text-decoration: none;
+}
+
+.like {
+  border: 1px solid rgba(0, 0, 106, 0.809);
+  align-self: right;
+  font-size: medium;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  border-radius: 15px;
+  background-color: rgb(228, 232, 228);
+  color: rgba(0, 0, 106, 0.809);
+}
+
+.homepage-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.post {
+  border: 2px black solid;
+  margin: 10px;
+  border-radius: 20px;
+  padding: 1em;
+}
+
+.response-menu {
+  display: flex;
+  justify-content: center;
+}
+
+.card-zone {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.banner {
+  background-color: rgba(0, 0, 106, 0.809);
+  color: white;
+  margin-top: 0;
+  height: 5%;
+}
+
+h1 {
+  padding: 1em;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+/* button:hover {
+  color: darkslategray;
+} */
